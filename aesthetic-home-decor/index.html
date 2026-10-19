@@ -1,0 +1,2517 @@
+<!DOCTYPE html>
+<html lang="en-GB" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lume & Luxe | Curated Decor, Architectural Inspiration & Room Guides for Modern Homes</title>
+  
+  <!-- Google Fonts: Playfair Display + Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Supabase JS Client v2 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Tailwind CSS CDN with Lume & Luxe Quiet Luxury Palette -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+          },
+          colors: {
+            // Quiet Luxury Palette: Soft Beige, Warm White, Charcoal Grey & Champagne Gold
+            luxe: {
+              charcoal: '#1A1C1E',
+              slate: '#2B2E33',
+              stone: '#4A4D53',
+              muted: '#72757D',
+            },
+            warm: {
+              white: '#FAF9F6',
+              alabaster: '#F5F3EF',
+              beige: '#ECE7E1',
+              linen: '#DFD8CE',
+              taupe: '#C8BEB2',
+            },
+            gold: {
+              light: '#EAD9C0',
+              champagne: '#CBB28A',
+              DEFAULT: '#B39366',
+              antique: '#9B7A4E',
+              dark: '#735730',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Refined quiet luxury scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #F5F3EF; }
+    ::-webkit-scrollbar-thumb { background: #CBB28A; border-radius: 9999px; }
+    
+    .luxe-shadow-sm {
+      box-shadow: 0 2px 12px -1px rgba(26, 28, 30, 0.04), 0 1px 4px -1px rgba(26, 28, 30, 0.02);
+    }
+    .luxe-shadow {
+      box-shadow: 0 8px 24px -2px rgba(26, 28, 30, 0.06), 0 2px 6px -1px rgba(26, 28, 30, 0.03);
+    }
+    .luxe-shadow-lg {
+      box-shadow: 0 20px 40px -4px rgba(26, 28, 30, 0.1), 0 6px 16px -2px rgba(26, 28, 30, 0.05);
+    }
+
+    /* Print Moodboard Formatting */
+    @media print {
+      body * { visibility: hidden; }
+      #moodboardDrawer, #moodboardDrawer * { visibility: visible; }
+      #moodboardDrawer { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; border: none; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-warm-white text-luxe-charcoal font-sans antialiased selection:bg-gold-light selection:text-luxe-charcoal">
+
+  <!-- ==================== LUME & LUXE TOP ANNOUNCEMENT BAR ==================== -->
+  <div class="bg-luxe-charcoal text-warm-alabaster text-[11px] py-2 px-4 tracking-wider uppercase border-b border-luxe-slate/50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <span class="font-medium tracking-widest text-gold-champagne">Lume &amp; Luxe Flagship Atelier</span>
+        <span class="hidden md:inline text-luxe-muted">|</span>
+        <span class="hidden md:inline text-warm-alabaster/70">Complimentary White-Glove Delivery Across the UK on Orders Over £250</span>
+      </div>
+      <div class="flex items-center space-x-6 text-warm-alabaster/80 text-[10px] tracking-widest">
+        <span class="hidden sm:inline text-gold-champagne font-semibold">&bull; 42 Mount Street, Mayfair, London</span>
+        <button onclick="switchView('about')" class="hover:text-gold-champagne transition-colors">Our Atelier</button>
+        <button onclick="switchView('contact')" class="hover:text-gold-champagne transition-colors">Concierge &amp; Enquiries</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN EDITORIAL HEADER ==================== -->
+  <header class="bg-white border-b border-warm-beige/80 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Masthead & Controls -->
+      <div class="py-6 sm:py-7 flex flex-col md:flex-row items-center justify-between border-b border-warm-alabaster gap-4">
+        
+        <!-- Left: Universal Search Box (Filters both Products & Articles) -->
+        <div class="relative w-full md:w-80 order-2 md:order-1">
+          <input type="text" id="searchInput" oninput="handleGlobalSearch()" placeholder="Search products, finishes, room guides..." class="w-full pl-9 pr-4 py-2.5 rounded-full text-xs bg-warm-alabaster border border-warm-beige focus:outline-none focus:border-gold-champagne focus:bg-white text-luxe-charcoal placeholder-luxe-muted transition-all">
+          <svg class="w-4 h-4 text-luxe-muted absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+
+        <!-- Center: LUME & LUXE Logo with Exact Tagline -->
+        <div class="text-center order-1 md:order-2 cursor-pointer" onclick="switchView('store')">
+          <span class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-luxe-charcoal uppercase block leading-none">
+            Lume &amp; Luxe
+          </span>
+          <span class="text-[9px] sm:text-[10px] tracking-[0.22em] uppercase text-gold-antique font-medium mt-1.5 block max-w-xl mx-auto">
+            Curated Decor, Architectural Inspiration &amp; Room Guides for Modern Homes
+          </span>
+        </div>
+
+        <!-- Right: Actions (Notebook & Shopping Bag) -->
+        <div class="flex items-center space-x-3 order-3">
+          
+          <!-- Design Notebook (Saved Guides) -->
+          <button onclick="toggleMoodboard(true)" title="Saved Design Notebook" class="flex items-center space-x-2 px-3.5 py-2 rounded-full border border-warm-beige hover:border-gold-champagne bg-warm-alabaster text-xs font-semibold tracking-wide text-luxe-charcoal transition-all">
+            <svg class="w-3.5 h-3.5 text-gold-antique" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"/>
+            </svg>
+            <span class="hidden sm:inline">Notebook</span>
+            <span id="notebookCount" class="w-4 h-4 rounded-full bg-warm-linen text-luxe-charcoal font-bold flex items-center justify-center text-[10px]">0</span>
+          </button>
+
+          <!-- Shopping Bag Button -->
+          <button onclick="toggleCart(true)" title="View Shopping Bag" class="flex items-center space-x-2 px-4 py-2 rounded-full bg-luxe-charcoal text-warm-white hover:bg-luxe-slate text-xs font-semibold tracking-wide transition-all shadow-sm">
+            <svg class="w-4 h-4 text-gold-champagne" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+            <span>Shopping Bag</span>
+            <span id="cartCount" class="w-5 h-5 rounded-full bg-gold-champagne text-luxe-charcoal font-bold flex items-center justify-center text-[10px]">0</span>
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- Main Navigation Menu (Dedicated Views: Store, Blog, About, Contact) -->
+      <nav class="flex items-center justify-center space-x-1 sm:space-x-8 py-3.5 overflow-x-auto text-xs tracking-wider uppercase font-semibold text-luxe-slate">
+        <button onclick="switchView('store')" id="tab-store" class="nav-tab py-1 text-luxe-charcoal border-b-2 border-gold-champagne font-bold transition-all">
+          Bespoke Store
+        </button>
+        <button onclick="switchView('blog')" id="tab-blog" class="nav-tab py-1 hover:text-gold-antique transition-all">
+          Design Blog &amp; Room Playbooks (14)
+        </button>
+        <button onclick="switchView('about')" id="tab-about" class="nav-tab py-1 hover:text-gold-antique transition-all">
+          About Lume &amp; Luxe
+        </button>
+        <button onclick="switchView('contact')" id="tab-contact" class="nav-tab py-1 hover:text-gold-antique transition-all">
+          Contact &amp; Mayfair Atelier
+        </button>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 1: BESPOKE E-COMMERCE STORE                                          -->
+  <!-- ========================================================================= -->
+  <section id="view-store" class="view-panel block">
+    
+    <!-- Store Hero Banner -->
+    <div class="bg-gradient-to-b from-warm-alabaster to-warm-white border-b border-warm-beige py-10 sm:py-14">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+        <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-gold-antique bg-white px-3 py-1 rounded-full border border-warm-beige">
+          The Autumn / Winter Curated Collection
+        </span>
+        <h1 class="font-serif text-3xl sm:text-5xl font-bold text-luxe-charcoal">
+          The Lume &amp; Luxe Store
+        </h1>
+        <p class="text-xs sm:text-sm text-luxe-stone max-w-2xl mx-auto leading-relaxed">
+          Artisanal furniture, solid unlacquered brass lighting, hand-knotted wool rugs, and architectural stoneware. Specially crafted for lasting residential beauty.
+        </p>
+
+        <!-- Quick Store Stats -->
+        <div class="pt-4 flex flex-wrap items-center justify-center gap-6 text-[11px] text-luxe-muted">
+          <span>&bull; Bespoke Made-to-Order Joinery</span>
+          <span>&bull; Natural Travertine &amp; Marble Slabs</span>
+          <span>&bull; Certified British Craftsmanship</span>
+          <span>&bull; Complimentary UK Returns</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Store Filter & Category Controls -->
+    <div class="border-b border-warm-beige bg-white sticky top-[138px] z-30 py-3.5 shadow-xs">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        
+        <!-- Category Filter Pills -->
+        <div class="flex items-center space-x-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none text-xs">
+          <button onclick="setProductCategory('all')" id="pcat-all" class="pcat-btn px-4 py-1.5 rounded-full bg-luxe-charcoal text-warm-white font-semibold transition-all">
+            All Objects (14)
+          </button>
+          <button onclick="setProductCategory('furniture')" id="pcat-furniture" class="pcat-btn px-4 py-1.5 rounded-full text-luxe-stone hover:text-luxe-charcoal font-medium transition-all">
+            Furniture
+          </button>
+          <button onclick="setProductCategory('lighting')" id="pcat-lighting" class="pcat-btn px-4 py-1.5 rounded-full text-luxe-stone hover:text-luxe-charcoal font-medium transition-all">
+            Architectural Lighting
+          </button>
+          <button onclick="setProductCategory('rugs')" id="pcat-rugs" class="pcat-btn px-4 py-1.5 rounded-full text-luxe-stone hover:text-luxe-charcoal font-medium transition-all">
+            Rugs &amp; Textiles
+          </button>
+          <button onclick="setProductCategory('accents')" id="pcat-accents" class="pcat-btn px-4 py-1.5 rounded-full text-luxe-stone hover:text-luxe-charcoal font-medium transition-all">
+            Objects &amp; Decor
+          </button>
+          <button onclick="setProductCategory('architectural')" id="pcat-architectural" class="pcat-btn px-4 py-1.5 rounded-full text-luxe-stone hover:text-luxe-charcoal font-medium transition-all">
+            Architectural Fixtures
+          </button>
+        </div>
+
+        <!-- Sort Select & Product Count -->
+        <div class="flex items-center space-x-3 text-xs text-luxe-stone">
+          <span id="productResultsCount" class="font-semibold text-luxe-charcoal">Showing 14 Products</span>
+          <span>&bull;</span>
+          <select id="productSort" onchange="sortProducts()" class="bg-warm-alabaster border border-warm-beige rounded-lg px-2.5 py-1 text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne">
+            <option value="featured">Featured Curations</option>
+            <option value="low-high">Price: Low to High</option>
+            <option value="high-low">Price: High to Low</option>
+            <option value="rating">Highest Rated</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      
+      <!-- Dynamic Product Grid Container -->
+      <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- No Products Found Message -->
+      <div id="noProductsFound" class="hidden text-center py-20">
+        <svg class="w-12 h-12 mx-auto text-luxe-muted mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        <h3 class="font-serif text-xl font-bold text-luxe-charcoal">No products match your search</h3>
+        <p class="text-xs text-luxe-stone mt-1">Try searching for keywords like "bouclé", "oak", "brass", "table", or "runner".</p>
+        <button onclick="resetStoreFilters()" class="mt-4 px-5 py-2 rounded-full bg-luxe-charcoal text-white text-xs font-semibold hover:bg-luxe-slate">
+          View All Products
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Store Quality Assurance Strip -->
+    <div class="border-t border-warm-beige bg-warm-alabaster py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center sm:text-left">
+        <div class="p-4 space-y-1">
+          <p class="font-serif text-base font-bold text-luxe-charcoal">White-Glove Delivery</p>
+          <p class="text-xs text-luxe-stone leading-relaxed">Delivered and assembled in your room of choice by our dedicated London installation fleet.</p>
+        </div>
+        <div class="p-4 space-y-1">
+          <p class="font-serif text-base font-bold text-luxe-charcoal">10-Year Craft Warranty</p>
+          <p class="text-xs text-luxe-stone leading-relaxed">Every piece of solid timber, quarried stone, and forged brass is engineered to endure generations.</p>
+        </div>
+        <div class="p-4 space-y-1">
+          <p class="font-serif text-base font-bold text-luxe-charcoal">Bespoke Design Service</p>
+          <p class="text-xs text-luxe-stone leading-relaxed">Custom dimensions, fabric COM (Customer's Own Material), and private finishes available upon request.</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 2: DESIGN BLOG & ROOM PLAYBOOKS (SEPARATE SECTION)                   -->
+  <!-- ========================================================================= -->
+  <section id="view-blog" class="view-panel hidden">
+    
+    <!-- Blog Section Header -->
+    <div class="bg-warm-alabaster border-b border-warm-beige py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+        <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-gold-antique bg-white px-3 py-1 rounded-full border border-warm-beige">
+          Editorial Journal &amp; Architectural Playbooks
+        </span>
+        <h2 class="font-serif text-3xl sm:text-5xl font-bold text-luxe-charcoal">
+          The Lume &amp; Luxe Room Guides
+        </h2>
+        <p class="text-xs sm:text-sm text-luxe-stone max-w-2xl mx-auto leading-relaxed">
+          Comprehensive interior design playbooks covering all 14 living zones. Explore spatial arrangements, 3-tier lighting schematics, and scale-specific guidance for mansions, flats, and compact homes.
+        </p>
+
+        <!-- Housing Scale Filter Bar -->
+        <div class="pt-6 inline-flex flex-wrap items-center justify-center gap-1.5 p-1 rounded-xl bg-white border border-warm-beige shadow-xs">
+          <button onclick="setPropertyScale('all')" id="scale-all" class="scale-btn active-scale px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-luxe-charcoal text-warm-white">
+            All Properties (14)
+          </button>
+          <button onclick="setPropertyScale('luxury')" id="scale-luxury" class="scale-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold text-luxe-stone hover:text-gold-antique">
+            🏰 Country Estates &amp; Mansions
+          </button>
+          <button onclick="setPropertyScale('flat')" id="scale-flat" class="scale-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold text-luxe-stone hover:text-gold-antique">
+            🏙️ Modern City Flats
+          </button>
+          <button onclick="setPropertyScale('small')" id="scale-small" class="scale-btn px-3.5 py-1.5 rounded-lg text-xs font-semibold text-luxe-stone hover:text-gold-antique">
+            🌿 Small &amp; Compact Homes
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blog Room Guides Grid -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      
+      <!-- Category Sub-pills -->
+      <div class="flex items-center justify-between pb-6 border-b border-warm-beige mb-8">
+        <div class="flex items-center space-x-2 overflow-x-auto pb-1 text-xs">
+          <button onclick="setBlogCategory('all')" id="bcat-all" class="bcat-btn px-3 py-1 rounded-full bg-luxe-charcoal text-white font-semibold">
+            All Zones (14)
+          </button>
+          <button onclick="setBlogCategory('living')" id="bcat-living" class="bcat-btn px-3 py-1 rounded-full text-luxe-stone hover:text-luxe-charcoal">
+            Living &amp; Drawing
+          </button>
+          <button onclick="setBlogCategory('culinary')" id="bcat-culinary" class="bcat-btn px-3 py-1 rounded-full text-luxe-stone hover:text-luxe-charcoal">
+            Kitchen &amp; Dining
+          </button>
+          <button onclick="setBlogCategory('sanctuary')" id="bcat-sanctuary" class="bcat-btn px-3 py-1 rounded-full text-luxe-stone hover:text-luxe-charcoal">
+            Bedrooms &amp; Baths
+          </button>
+          <button onclick="setBlogCategory('family')" id="bcat-family" class="bcat-btn px-3 py-1 rounded-full text-luxe-stone hover:text-luxe-charcoal">
+            Children &amp; Leisure
+          </button>
+          <button onclick="setBlogCategory('architectural')" id="bcat-architectural" class="bcat-btn px-3 py-1 rounded-full text-luxe-stone hover:text-luxe-charcoal">
+            Stairs, Entry &amp; Garden
+          </button>
+        </div>
+
+        <button onclick="openStyleQuiz()" class="text-xs text-gold-antique hover:underline font-semibold hidden md:inline">
+          ✦ Take 60s Style Quiz
+        </button>
+      </div>
+
+      <!-- Grid of Editorial Cards -->
+      <div id="blogRoomsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Injected dynamically -->
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 3: ABOUT US & ATELIER                                                -->
+  <!-- ========================================================================= -->
+  <section id="view-about" class="view-panel hidden">
+    
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+      
+      <!-- Brand Story Hero -->
+      <div class="text-center space-y-4">
+        <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-gold-antique bg-warm-alabaster px-3 py-1 rounded-full border border-warm-beige">
+          Our Heritage &bull; Founded in London
+        </span>
+        <h2 class="font-serif text-3xl sm:text-5xl font-bold text-luxe-charcoal">
+          The Story of Lume &amp; Luxe
+        </h2>
+        <p class="text-sm sm:text-base text-luxe-stone max-w-2xl mx-auto leading-relaxed font-light">
+          Born from a passionate reverence for British architectural proportion and Scandinavian organic warmth, Lume &amp; Luxe bridges timeless interior inspiration with masterfully crafted decor.
+        </p>
+      </div>
+
+      <!-- Image Collage -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+        <div class="h-80 sm:h-96 rounded-2xl overflow-hidden luxe-shadow">
+          <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80" alt="Mayfair Studio" class="w-full h-full object-cover">
+        </div>
+        <div class="space-y-4 sm:pl-6">
+          <span class="text-xs uppercase font-bold tracking-wider text-gold-antique">Our Core Philosophy</span>
+          <h3 class="font-serif text-2xl font-bold text-luxe-charcoal leading-snug">
+            Homes Formed with Spatial Balance, Tactile Honesty &amp; Lasting Calm
+          </h3>
+          <p class="text-xs sm:text-sm text-luxe-stone leading-relaxed">
+            We believe an extraordinary home is never assembled haphazardly. It requires an understanding of daylight orientation, noble materials like honed travertine and quarter-sawn English oak, and purposeful negative space that allows rooms to breathe.
+          </p>
+          <p class="text-xs sm:text-sm text-luxe-stone leading-relaxed">
+            Our atelier brings together architectural writers, lighting specialists, and master craftsmen who create both our detailed room-by-room playbooks and our limited-edition decor pieces.
+          </p>
+        </div>
+      </div>
+
+      <!-- Three Pillars -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
+        <div class="p-6 rounded-2xl bg-warm-alabaster border border-warm-beige space-y-2">
+          <span class="text-gold-antique font-serif text-xl font-bold">01.</span>
+          <h4 class="font-serif text-base font-bold text-luxe-charcoal">Architectural Rigour</h4>
+          <p class="text-xs text-luxe-stone leading-relaxed">Every piece and playbook is designed according to golden-ratio proportions and true residential scale.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-warm-alabaster border border-warm-beige space-y-2">
+          <span class="text-gold-antique font-serif text-xl font-bold">02.</span>
+          <h4 class="font-serif text-base font-bold text-luxe-charcoal">Bespoke Materiality</h4>
+          <p class="text-xs text-luxe-stone leading-relaxed">We reject synthetic composites in favour of solid timbers, natural unbleached wools, and honest patinating metals.</p>
+        </div>
+        <div class="p-6 rounded-2xl bg-warm-alabaster border border-warm-beige space-y-2">
+          <span class="text-gold-antique font-serif text-xl font-bold">03.</span>
+          <h4 class="font-serif text-base font-bold text-luxe-charcoal">Quiet Luxury</h4>
+          <p class="text-xs text-luxe-stone leading-relaxed">Zero loud logos or fleeting trends. Our palette is calibrated to harmonise with daylight and soft candlelight.</p>
+        </div>
+      </div>
+
+      <!-- Atelier & Showroom Invite -->
+      <div class="p-8 rounded-2xl bg-luxe-charcoal text-warm-alabaster flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="space-y-1 text-center md:text-left">
+          <h4 class="font-serif text-xl font-bold text-white">Visit Our Mayfair Showroom</h4>
+          <p class="text-xs text-warm-alabaster/70">Experience our materials, lighting, and bespoke dining collection in person.</p>
+          <p class="text-[11px] text-gold-champagne">42 Mount Street, Mayfair, London W1K 2RY &bull; Mon–Sat 10:00–18:00</p>
+        </div>
+        <button onclick="switchView('contact')" class="px-5 py-2.5 rounded-full bg-gold-champagne text-luxe-charcoal hover:bg-gold-antique font-bold text-xs uppercase tracking-wider transition-colors shrink-0">
+          Book Private Consultation
+        </button>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 4: CONTACT US & CONCIERGE                                            -->
+  <!-- ========================================================================= -->
+  <section id="view-contact" class="view-panel hidden">
+    
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      
+      <div class="text-center space-y-3 mb-12">
+        <span class="text-[10px] uppercase font-bold tracking-[0.25em] text-gold-antique bg-warm-alabaster px-3 py-1 rounded-full border border-warm-beige">
+          Concierge &amp; Enquiries
+        </span>
+        <h2 class="font-serif text-3xl sm:text-5xl font-bold text-luxe-charcoal">
+          Connect with Lume &amp; Luxe
+        </h2>
+        <p class="text-xs sm:text-sm text-luxe-stone max-w-xl mx-auto leading-relaxed">
+          Whether discussing a bespoke furniture commission, requesting an architectural consultation, or inquiring about an order, our Mayfair concierge is at your service.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        
+        <!-- Contact Form (7 cols) -->
+        <div class="lg:col-span-7 bg-white p-6 sm:p-10 rounded-2xl border border-warm-beige luxe-shadow space-y-6">
+          <h3 class="font-serif text-xl font-bold text-luxe-charcoal">Send a Written Message</h3>
+          
+          <form id="contactForm" onsubmit="handleContactSubmit(event)" class="space-y-4">
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs uppercase font-bold tracking-wider text-luxe-stone mb-1.5">First Name *</label>
+                <input id="contactFirstName" type="text" required placeholder="e.g. Alistair" class="w-full px-3.5 py-2.5 rounded-xl border border-warm-beige bg-warm-alabaster text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne focus:bg-white">
+              </div>
+              <div>
+                <label class="block text-xs uppercase font-bold tracking-wider text-luxe-stone mb-1.5">Last Name *</label>
+                <input id="contactLastName" type="text" required placeholder="e.g. Montgomery" class="w-full px-3.5 py-2.5 rounded-xl border border-warm-beige bg-warm-alabaster text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne focus:bg-white">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs uppercase font-bold tracking-wider text-luxe-stone mb-1.5">Email Address *</label>
+                <input id="contactEmail" type="email" required placeholder="name@domain.co.uk" class="w-full px-3.5 py-2.5 rounded-xl border border-warm-beige bg-warm-alabaster text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne focus:bg-white">
+              </div>
+              <div>
+                <label class="block text-xs uppercase font-bold tracking-wider text-luxe-stone mb-1.5">Telephone Number</label>
+                <input id="contactPhone" type="tel" placeholder="+44 (0) 7..." class="w-full px-3.5 py-2.5 rounded-xl border border-warm-beige bg-warm-alabaster text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne focus:bg-white">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs uppercase font-bold tracking-wider text-luxe-stone mb-1.5">Enquiry Classification</label>
+              <select id="contactType" class="w-full px-3.5 py-2.5 rounded-xl border border-warm-beige bg-warm-alabaster text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne">
+                <option>Private Interior Styling &amp; Consultation</option>
+                <option>Bespoke Furniture &amp; Architectural Joinery</option>
+                <option>Online Order &amp; Delivery Concierge</option>
+                <option>Trade &amp; Commercial Accounts</option>
+                <option>Press &amp; Editorial Enquiries</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs uppercase font-bold tracking-wider text-luxe-stone mb-1.5">Your Message *</label>
+              <textarea id="contactMessage" rows="4" required placeholder="Kindly describe your project, preferred room, or enquiry in detail..." class="w-full px-3.5 py-2.5 rounded-xl border border-warm-beige bg-warm-alabaster text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne focus:bg-white"></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-3 rounded-full bg-luxe-charcoal text-white hover:bg-luxe-slate text-xs font-bold uppercase tracking-wider transition-colors shadow">
+              Submit Enquiry to Concierge
+            </button>
+            
+            <p class="text-[10px] text-luxe-muted text-center">
+              Our Mayfair client advisory team replies to all formal submissions within 24 working hours.
+            </p>
+
+          </form>
+        </div>
+
+        <!-- Contact Direct Details & Showroom (5 cols) -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <div class="p-6 rounded-2xl bg-warm-alabaster border border-warm-beige space-y-4">
+            <h4 class="font-serif text-lg font-bold text-luxe-charcoal">Mayfair Atelier &amp; Studio</h4>
+            <div class="text-xs text-luxe-stone space-y-1">
+              <p class="font-semibold text-luxe-charcoal">Lume &amp; Luxe London</p>
+              <p>42 Mount Street</p>
+              <p>Mayfair, London W1K 2RY</p>
+              <p>United Kingdom</p>
+            </div>
+            
+            <div class="pt-3 border-t border-warm-beige text-xs text-luxe-stone space-y-1">
+              <p><strong class="text-luxe-charcoal">Telephone:</strong> +44 (0)20 7946 0880</p>
+              <p><strong class="text-luxe-charcoal">Concierge Desk:</strong> concierge@lumeluxe.co.uk</p>
+              <p><strong class="text-luxe-charcoal">Trade Enquiries:</strong> trade@lumeluxe.co.uk</p>
+            </div>
+
+            <div class="pt-3 border-t border-warm-beige text-xs text-luxe-stone">
+              <p class="font-semibold text-luxe-charcoal mb-1">Showroom Opening Hours:</p>
+              <p>Monday to Friday: 09:30 &ndash; 18:00</p>
+              <p>Saturday: 10:00 &ndash; 17:30</p>
+              <p>Sunday: By Private Appointment Only</p>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-white border border-warm-beige luxe-shadow space-y-3">
+            <span class="text-[10px] uppercase font-bold tracking-wider text-gold-antique">Complimentary Advisory</span>
+            <h4 class="font-serif text-base font-bold text-luxe-charcoal">Virtual Design Consultations</h4>
+            <p class="text-xs text-luxe-stone leading-relaxed">
+              Residing outside London? Book a 45-minute one-to-one video session with our senior interior architectural team to review your room plans and material finishes.
+            </p>
+            <a href="mailto:concierge@lumeluxe.co.uk?subject=Virtual Consultation Booking" class="inline-block text-xs font-bold text-gold-antique hover:underline">
+              Request Video Appointment &rarr;
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ==================== SLIDE-OUT SHOPPING BAG DRAWER ==================== -->
+  <div id="cartDrawer" class="fixed inset-y-0 right-0 z-50 w-full sm:w-[440px] bg-white border-l border-warm-beige shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between">
+    
+    <!-- Drawer Header -->
+    <div class="p-5 border-b border-warm-beige flex items-center justify-between bg-warm-alabaster">
+      <div>
+        <span class="text-[10px] uppercase font-bold tracking-widest text-gold-antique">Lume &amp; Luxe Store</span>
+        <h3 class="font-serif text-xl font-bold text-luxe-charcoal">Your Shopping Bag</h3>
+      </div>
+      <button onclick="toggleCart(false)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-luxe-muted hover:text-luxe-charcoal border border-warm-beige">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Free Delivery Progress Bar -->
+    <div class="px-5 py-2.5 bg-warm-beige/50 border-b border-warm-beige text-[11px] text-luxe-stone">
+      <div class="flex justify-between font-semibold mb-1">
+        <span id="freeShippingText">Complimentary UK delivery over £250</span>
+        <span id="freeShippingStatus">Eligible</span>
+      </div>
+      <div class="w-full bg-warm-alabaster h-1.5 rounded-full overflow-hidden">
+        <div id="freeShippingBar" class="bg-gold-champagne h-full rounded-full transition-all duration-300" style="width: 100%;"></div>
+      </div>
+    </div>
+
+    <!-- Items List -->
+    <div id="cartItemsList" class="flex-1 overflow-y-auto p-5 space-y-4">
+      <!-- Rendered dynamically -->
+    </div>
+
+    <!-- Bag Footer -->
+    <div class="p-5 border-t border-warm-beige bg-warm-alabaster space-y-3">
+      <div class="flex items-center justify-between text-xs text-luxe-stone">
+        <span>Estimated Subtotal (VAT included):</span>
+        <strong id="cartSubtotal" class="font-serif text-base text-luxe-charcoal">£0.00</strong>
+      </div>
+      
+      <button onclick="openCheckoutModal()" class="w-full py-3 rounded-full bg-luxe-charcoal text-white hover:bg-luxe-slate text-xs font-bold uppercase tracking-wider transition-all shadow">
+        Proceed to Secure Checkout
+      </button>
+      
+      <p class="text-[10px] text-center text-luxe-muted">
+        Encrypted 256-bit checkout &bull; White-glove UK delivery &bull; 14-day return privilege
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ==================== PRODUCT QUICK-VIEW MODAL ==================== -->
+  <div id="productModal" class="fixed inset-0 z-50 hidden bg-luxe-charcoal/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto luxe-shadow-lg border border-warm-beige p-6 sm:p-8 relative">
+      
+      <button onclick="closeProductModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-warm-alabaster flex items-center justify-center text-luxe-muted hover:text-luxe-charcoal">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
+        <div class="rounded-xl overflow-hidden h-72 border border-warm-beige">
+          <img id="pmImage" src="" alt="Product" class="w-full h-full object-cover">
+        </div>
+        <div class="space-y-4">
+          <div>
+            <span id="pmCategory" class="text-[10px] uppercase font-bold tracking-widest text-gold-antique"></span>
+            <h3 id="pmTitle" class="font-serif text-2xl font-bold text-luxe-charcoal leading-snug"></h3>
+            <p id="pmPrice" class="font-serif text-xl text-gold-antique font-bold mt-1"></p>
+          </div>
+
+          <p id="pmDescription" class="text-xs text-luxe-stone leading-relaxed"></p>
+
+          <div class="p-3 rounded-lg bg-warm-alabaster text-xs text-luxe-stone space-y-1">
+            <p><strong class="text-luxe-charcoal">Material:</strong> <span id="pmMaterial"></span></p>
+            <p><strong class="text-luxe-charcoal">Dimensions:</strong> <span id="pmDimensions"></span></p>
+            <p><strong class="text-luxe-charcoal">Availability:</strong> <span class="text-emerald-700 font-semibold">In Stock &bull; Dispatches in 48h</span></p>
+          </div>
+
+          <div class="flex items-center space-x-3 pt-2">
+            <button id="pmAddButton" onclick="" class="flex-1 py-2.5 rounded-full bg-luxe-charcoal text-white hover:bg-luxe-slate text-xs font-bold uppercase tracking-wider transition-all">
+              Add to Shopping Bag
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== LUXURY ORDER CHECKOUT MODAL ==================== -->
+  <div id="checkoutModal" class="fixed inset-0 z-50 hidden bg-luxe-charcoal/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[92vh] overflow-y-auto luxe-shadow-lg border border-warm-beige p-6 sm:p-8 relative">
+      
+      <!-- Close Button -->
+      <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-warm-alabaster flex items-center justify-center text-luxe-muted hover:text-luxe-charcoal transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="border-b border-warm-beige pb-4 mb-6">
+        <div class="flex items-center space-x-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-gold-champagne"></span>
+          <span class="text-[10px] uppercase font-bold tracking-widest text-gold-antique">Mayfair Client Services &bull; Secure Checkout</span>
+        </div>
+        <h3 class="font-serif text-2xl font-bold text-luxe-charcoal mt-1">Complete Your Architectural Order</h3>
+        <p class="text-xs text-luxe-muted">Please provide your delivery destination and contact details for bespoke white-glove dispatch.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left: Customer Information Form (7 cols) -->
+        <form id="checkoutForm" onsubmit="handleOrderCheckoutSubmit(event)" class="lg:col-span-7 space-y-4">
+          
+          <h4 class="text-xs uppercase font-bold tracking-wider text-luxe-charcoal border-b border-warm-beige pb-1">1. Recipient Information</h4>
+          
+          <div>
+            <label class="block text-[11px] uppercase font-bold tracking-wider text-luxe-stone mb-1">Full Name *</label>
+            <input id="checkoutFullName" type="text" required placeholder="e.g. Eleanor Vance" class="w-full px-3.5 py-2.5 rounded-xl border border-warm-beige bg-warm-alabaster text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne focus:bg-white">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] uppercase font-bold tracking-wider text-luxe-stone mb-1">Email Address *</label>
+              <input id="checkoutEmail" type="email" required placeholder="eleanor@domain.com" class="w-full px-3.5 py-2.5 rounded-xl border border-warm-beige bg-warm-alabaster text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne focus:bg-white">
+            </div>
+            <div>
+              <label class="block text-[11px] uppercase font-bold tracking-wider text-luxe-stone mb-1">Telephone / Mobile *</label>
+              <input id="checkoutPhone" type="tel" required placeholder="+44 (0) 7946 088..." class="w-full px-3.5 py-2.5 rounded-xl border border-warm-beige bg-warm-alabaster text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne focus:bg-white">
+            </div>
+          </div>
+
+          <h4 class="text-xs uppercase font-bold tracking-wider text-luxe-charcoal border-b border-warm-beige pb-1 pt-2">2. Delivery &amp; Shipping Address</h4>
+
+          <div>
+            <label class="block text-[11px] uppercase font-bold tracking-wider text-luxe-stone mb-1">Street Address, Suite / Flat *</label>
+            <input id="checkoutStreet" type="text" required placeholder="e.g. Flat 14, 28 Berkeley Square" class="w-full px-3.5 py-2.5 rounded-xl border border-warm-beige bg-warm-alabaster text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne focus:bg-white">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-[11px] uppercase font-bold tracking-wider text-luxe-stone mb-1">City / Town *</label>
+              <input id="checkoutCity" type="text" required placeholder="London" class="w-full px-3.5 py-2.5 rounded-xl border border-warm-beige bg-warm-alabaster text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne focus:bg-white">
+            </div>
+            <div>
+              <label class="block text-[11px] uppercase font-bold tracking-wider text-luxe-stone mb-1">Country *</label>
+              <select id="checkoutCountry" class="w-full px-3.5 py-2.5 rounded-xl border border-warm-beige bg-warm-alabaster text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne focus:bg-white">
+                <option value="United Kingdom" selected>United Kingdom</option>
+                <option value="Pakistan">Pakistan</option>
+                <option value="United States">United States</option>
+                <option value="United Arab Emirates">United Arab Emirates</option>
+                <option value="Saudi Arabia">Saudi Arabia</option>
+                <option value="France">France</option>
+                <option value="Germany">Germany</option>
+                <option value="Italy">Italy</option>
+                <option value="Canada">Canada</option>
+                <option value="Australia">Australia</option>
+                <option value="Other">Other International</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] uppercase font-bold tracking-wider text-luxe-stone mb-1">Postcode / ZIP *</label>
+              <input id="checkoutPostal" type="text" required placeholder="W1J 6EN" class="w-full px-3.5 py-2.5 rounded-xl border border-warm-beige bg-warm-alabaster text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne focus:bg-white">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] uppercase font-bold tracking-wider text-luxe-stone mb-1">Special Delivery Instructions (Optional)</label>
+            <textarea id="checkoutNotes" rows="2" placeholder="e.g. Ring concierge bell, 2nd floor delivery, gate code 4921..." class="w-full px-3.5 py-2.5 rounded-xl border border-warm-beige bg-warm-alabaster text-xs text-luxe-charcoal focus:outline-none focus:border-gold-champagne focus:bg-white"></textarea>
+          </div>
+
+          <h4 class="text-xs uppercase font-bold tracking-wider text-luxe-charcoal border-b border-warm-beige pb-1 pt-2">3. Settlement Protocol</h4>
+          <div class="p-3 rounded-xl border border-warm-beige bg-warm-alabaster space-y-2 text-xs">
+            <label class="flex items-center space-x-2 cursor-pointer font-medium text-luxe-charcoal">
+              <input type="radio" name="paymentOption" checked class="text-gold-champagne focus:ring-gold-champagne">
+              <span>Direct Mayfair Concierge Invoice &amp; BACS Transfer (Recommended)</span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer font-medium text-luxe-stone">
+              <input type="radio" name="paymentOption" class="text-gold-champagne focus:ring-gold-champagne">
+              <span>Card Settlement (Simulated 256-Bit Encrypted)</span>
+            </label>
+          </div>
+
+          <button id="checkoutSubmitBtn" type="submit" class="w-full py-3.5 rounded-full bg-luxe-charcoal text-white hover:bg-luxe-slate text-xs font-bold uppercase tracking-wider transition-all shadow-lg flex items-center justify-center space-x-2">
+            <span>Confirm &amp; Transmit Order</span>
+          </button>
+
+          <p class="text-[10px] text-luxe-muted text-center">
+            By confirming, your order will be instantly registered in our Mayfair Atelier Supabase database.
+          </p>
+
+        </form>
+
+        <!-- Right: Order Summary Breakdown (5 cols) -->
+        <div class="lg:col-span-5 bg-warm-alabaster p-5 rounded-2xl border border-warm-beige space-y-4">
+          <h4 class="font-serif text-base font-bold text-luxe-charcoal border-b border-warm-beige pb-2">Order Breakdown</h4>
+          
+          <div id="checkoutSummaryItems" class="space-y-3 max-h-56 overflow-y-auto pr-1 text-xs">
+            <!-- Dynamically populated -->
+          </div>
+
+          <div class="border-t border-warm-beige pt-3 space-y-2 text-xs">
+            <div class="flex justify-between text-luxe-stone">
+              <span>Subtotal:</span>
+              <strong id="checkoutSummarySubtotal" class="font-serif text-luxe-charcoal">£0.00</strong>
+            </div>
+            <div class="flex justify-between text-luxe-stone">
+              <span>White-Glove Delivery:</span>
+              <span id="checkoutSummaryShipping" class="text-emerald-700 font-semibold">Complimentary</span>
+            </div>
+            <div class="flex justify-between border-t border-warm-beige pt-2 text-sm">
+              <span class="font-bold text-luxe-charcoal">Total (VAT included):</span>
+              <strong id="checkoutSummaryTotal" class="font-serif text-base text-gold-antique">£0.00</strong>
+            </div>
+          </div>
+
+          <div class="p-3 bg-white rounded-xl border border-warm-beige text-[11px] text-luxe-stone space-y-1">
+            <div class="flex items-center space-x-1.5 text-luxe-charcoal font-bold">
+              <svg class="w-3.5 h-3.5 text-gold-champagne shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+              <span>White-Glove Protection</span>
+            </div>
+            <p>Every piece is inspected at our Mayfair facility before temperature-controlled transit to your residence.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== ORDER SUCCESS CONFIRMATION MODAL ==================== -->
+  <div id="orderSuccessModal" class="fixed inset-0 z-50 hidden bg-luxe-charcoal/85 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-8 text-center luxe-shadow-lg border border-warm-beige relative">
+      <div class="w-16 h-16 rounded-full bg-warm-alabaster border-2 border-gold-champagne flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-gold-antique" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+      </div>
+
+      <span class="text-[10px] uppercase font-bold tracking-widest text-gold-antique">Order Dispatched to Mayfair Concierge</span>
+      <h3 class="font-serif text-2xl font-bold text-luxe-charcoal mt-1 mb-2">Thank You For Your Commission</h3>
+      
+      <p class="text-xs text-luxe-stone mb-6">
+        Your bespoke order has been successfully recorded in our central Supabase atelier database.
+      </p>
+
+      <div class="bg-warm-alabaster p-4 rounded-xl border border-warm-beige text-left text-xs space-y-2 mb-6">
+        <div class="flex justify-between border-b border-warm-beige pb-1.5">
+          <span class="text-luxe-muted">Order Reference:</span>
+          <strong id="successOrderRef" class="font-mono text-gold-antique font-bold">LL-000000</strong>
+        </div>
+        <div class="flex justify-between border-b border-warm-beige pb-1.5">
+          <span class="text-luxe-muted">Recipient Name:</span>
+          <span id="successCustomerName" class="font-semibold text-luxe-charcoal"></span>
+        </div>
+        <div class="flex justify-between border-b border-warm-beige pb-1.5">
+          <span class="text-luxe-muted">Delivery Destination:</span>
+          <span id="successShippingAddress" class="text-luxe-stone text-right"></span>
+        </div>
+        <div class="flex justify-between pt-0.5">
+          <span class="text-luxe-muted">Amount Recorded:</span>
+          <strong id="successTotalAmount" class="font-serif text-luxe-charcoal font-bold">£0.00</strong>
+        </div>
+      </div>
+
+      <button onclick="closeOrderSuccessModal()" class="w-full py-3 rounded-full bg-luxe-charcoal text-white hover:bg-luxe-slate text-xs font-bold uppercase tracking-wider transition-all">
+        Return to Bespoke Catalogue
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== ROOM ARTICLE DETAIL MODAL (BLOG) ==================== -->
+  <div id="roomModal" class="fixed inset-0 z-50 hidden bg-luxe-charcoal/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[94vh] overflow-y-auto luxe-shadow-lg border border-warm-beige flex flex-col justify-between">
+      
+      <div class="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b border-warm-beige px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-gold-champagne"></span>
+          <span id="modalSectionBadge" class="text-[10px] uppercase font-bold tracking-widest text-luxe-charcoal">Lume &amp; Luxe Decor Playbook</span>
+          <span class="text-warm-linen">|</span>
+          <span id="modalAestheticTag" class="text-[10px] font-semibold text-gold-antique uppercase tracking-wider"></span>
+        </div>
+        <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-warm-alabaster flex items-center justify-center text-luxe-muted hover:text-luxe-charcoal hover:bg-warm-beige transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <article class="p-6 sm:p-10 space-y-8 flex-1">
+        <div>
+          <h1 id="modalTitle" class="font-serif text-3xl sm:text-4xl font-bold text-luxe-charcoal leading-tight"></h1>
+          <div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-luxe-muted border-b border-warm-alabaster pb-4">
+            <span class="font-semibold text-luxe-charcoal">By Charlotte Sterling &bull; Interior Architecture Lead</span>
+            <span>&bull;</span>
+            <span class="text-gold-antique font-medium">Fact Checked by Royal Society of Architects</span>
+            <span>&bull;</span>
+            <span id="modalReadTime">7 min read</span>
+          </div>
+        </div>
+
+        <div class="relative h-80 sm:h-[420px] rounded-xl overflow-hidden luxe-shadow">
+          <img id="modalImage" src="" alt="Room detail" class="w-full h-full object-cover">
+          <div class="absolute bottom-3 left-3 bg-luxe-charcoal/85 text-warm-alabaster text-[11px] px-3 py-1 rounded backdrop-blur-sm border border-gold-champagne/20">
+            Lume &amp; Luxe Architectural Reference
+          </div>
+        </div>
+
+        <div class="prose max-w-none">
+          <p id="modalOverview" class="text-luxe-stone text-sm sm:text-base leading-relaxed font-normal"></p>
+        </div>
+
+        <div class="p-6 rounded-xl bg-warm-alabaster border border-warm-beige">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="font-serif text-lg font-bold text-luxe-charcoal">Curated British Colour Palette</h3>
+              <p class="text-xs text-luxe-muted">Harmonised tones formulated for daylight retention and organic warmth</p>
+            </div>
+            <span class="text-[11px] font-sans text-gold-antique font-semibold">Click swatch to copy HEX</span>
+          </div>
+          <div id="modalPalette" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+        </div>
+
+        <div>
+          <h3 class="font-serif text-xl font-bold text-luxe-charcoal mb-2">
+            Scale-Specific Architectural Execution
+          </h3>
+          <p class="text-xs text-luxe-muted mb-4">How to adapt this exact room according to your property’s square footage:</p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-5 rounded-xl border border-warm-beige bg-white luxe-shadow">
+              <div class="flex items-center space-x-2 text-gold-antique font-bold text-xs uppercase tracking-wider mb-2">
+                <span>🏰 Country Estate &amp; Luxury Mansion</span>
+              </div>
+              <p id="modalLuxuryScale" class="text-xs text-luxe-stone leading-relaxed"></p>
+            </div>
+
+            <div class="p-5 rounded-xl border border-warm-beige bg-white luxe-shadow">
+              <div class="flex items-center space-x-2 text-luxe-charcoal font-bold text-xs uppercase tracking-wider mb-2">
+                <span>🏙️ Modern Flat &amp; City Apartment</span>
+              </div>
+              <p id="modalFlatScale" class="text-xs text-luxe-stone leading-relaxed"></p>
+            </div>
+
+            <div class="p-5 rounded-xl border border-warm-beige bg-white luxe-shadow">
+              <div class="flex items-center space-x-2 text-luxe-stone font-bold text-xs uppercase tracking-wider mb-2">
+                <span>🌿 Compact &amp; Small Townhouse</span>
+              </div>
+              <p id="modalSmallScale" class="text-xs text-luxe-stone leading-relaxed"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div class="p-5 rounded-xl bg-warm-alabaster border border-warm-beige">
+            <h4 class="text-xs uppercase font-bold tracking-wider text-luxe-charcoal mb-3 flex items-center space-x-2">
+              <svg class="w-4 h-4 text-gold-champagne" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+              <span>3-Tier Lighting Architecture</span>
+            </h4>
+            <ul id="modalLighting" class="text-xs text-luxe-stone space-y-2"></ul>
+          </div>
+
+          <div class="p-5 rounded-xl bg-warm-alabaster border border-warm-beige">
+            <h4 class="text-xs uppercase font-bold tracking-wider text-luxe-charcoal mb-3 flex items-center space-x-2">
+              <svg class="w-4 h-4 text-gold-champagne" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+              <span>Key Textures &amp; Specified Materials</span>
+            </h4>
+            <div id="modalMaterials" class="flex flex-wrap gap-1.5"></div>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-xl bg-warm-beige/60 border-l-4 border-gold-champagne">
+          <p class="text-xs font-bold uppercase tracking-wider text-luxe-charcoal mb-1">Lume &amp; Luxe Editor's Golden Rule</p>
+          <p id="modalGoldenRule" class="text-xs text-luxe-stone leading-relaxed"></p>
+        </div>
+      </article>
+
+      <div class="sticky bottom-0 z-20 bg-white border-t border-warm-beige px-6 py-4 flex items-center justify-between">
+        <button id="modalPinButton" onclick="togglePinCurrentModal()" class="px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center space-x-2"></button>
+        <button onclick="closeModal()" class="px-4 py-2 text-xs font-semibold text-luxe-muted hover:text-luxe-charcoal">
+          Close Guide
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== NOTEBOOK DRAWER ==================== -->
+  <div id="moodboardDrawer" class="fixed inset-y-0 right-0 z-50 w-full sm:w-[480px] bg-white border-l border-warm-beige shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between">
+    <div class="p-6 border-b border-warm-beige flex items-center justify-between bg-warm-alabaster">
+      <div>
+        <span class="text-[10px] uppercase font-bold tracking-widest text-gold-antique">Lume &amp; Luxe Portfolio</span>
+        <h3 class="font-serif text-2xl font-bold text-luxe-charcoal">My Design Notebook</h3>
+        <p class="text-xs text-luxe-muted">Curated decor guides, colour swatches &amp; room ideas</p>
+      </div>
+      <button onclick="toggleMoodboard(false)" class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-luxe-muted hover:text-luxe-charcoal border border-warm-beige">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div id="moodboardList" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+
+    <div class="p-6 border-t border-warm-beige bg-warm-alabaster space-y-3 no-print">
+      <div class="flex items-center justify-between text-xs text-luxe-muted mb-1">
+        <span>Saved Guides: <strong id="drawerItemCount">0</strong></span>
+        <button onclick="clearMoodboard()" class="text-red-600 hover:underline">Clear Notebook</button>
+      </div>
+      <button onclick="window.print()" class="w-full py-3 rounded-full bg-luxe-charcoal text-white font-bold text-xs uppercase tracking-wider hover:bg-luxe-slate shadow transition-all flex items-center justify-center space-x-2">
+        <svg class="w-4 h-4 text-gold-champagne" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        <span>Print &amp; Export Decor Notebook (PDF)</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== QUIZ MODAL ==================== -->
+  <div id="quizModal" class="fixed inset-0 z-50 hidden bg-luxe-charcoal/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 luxe-shadow-lg border border-warm-beige">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-[10px] uppercase font-bold tracking-widest text-gold-antique">Lume &amp; Luxe Interactive Tool</span>
+        <button onclick="closeStyleQuiz()" class="text-luxe-muted hover:text-luxe-charcoal">&times;</button>
+      </div>
+
+      <h3 class="font-serif text-2xl font-bold text-luxe-charcoal mb-1">Find Your Signature Aesthetic</h3>
+      <p class="text-xs text-luxe-muted mb-6">Answer three styling preferences to discover your ideal interior decor direction.</p>
+
+      <div id="quizStepContainer" class="space-y-6">
+        <div id="quizStep1">
+          <p class="text-sm font-bold text-luxe-charcoal mb-3">1. Which illumination atmosphere best suits your evening routine?</p>
+          <div class="space-y-2">
+            <button onclick="answerQuiz(1, 'natural')" class="w-full text-left p-3.5 rounded-xl border border-warm-beige hover:border-gold-champagne text-xs font-medium hover:bg-warm-alabaster transition-colors">
+              ☀️ Generous morning sunlight filtered through natural linen voiles and sheer drapes
+            </button>
+            <button onclick="answerQuiz(1, 'moody')" class="w-full text-left p-3.5 rounded-xl border border-warm-beige hover:border-gold-champagne text-xs font-medium hover:bg-warm-alabaster transition-colors">
+              🕯️ Atmospheric warm amber glow, indirect cove lighting, and dimmable table lamps
+            </button>
+            <button onclick="answerQuiz(1, 'balanced')" class="w-full text-left p-3.5 rounded-xl border border-warm-beige hover:border-gold-champagne text-xs font-medium hover:bg-warm-alabaster transition-colors">
+              💡 Crisp architectural spotlights, concealed joinery LEDs, and purposeful task light
+            </button>
+          </div>
+        </div>
+
+        <div id="quizStep2" class="hidden">
+          <p class="text-sm font-bold text-luxe-charcoal mb-3">2. Which material pairing evokes the most comfort?</p>
+          <div class="space-y-2">
+            <button onclick="answerQuiz(2, 'wood')" class="w-full text-left p-3.5 rounded-xl border border-warm-beige hover:border-gold-champagne text-xs font-medium hover:bg-warm-alabaster transition-colors">
+              🪵 Warm fluted English oak, tactile bouclé fabric, woven jute, and raw stoneware
+            </button>
+            <button onclick="answerQuiz(2, 'marble')" class="w-full text-left p-3.5 rounded-xl border border-warm-beige hover:border-gold-champagne text-xs font-medium hover:bg-warm-alabaster transition-colors">
+              🏛️ Veined Calacatta marble, aged brass fixtures, reeded glass, and deep mohair velvet
+            </button>
+            <button onclick="answerQuiz(2, 'leather')" class="w-full text-left p-3.5 rounded-xl border border-warm-beige hover:border-gold-champagne text-xs font-medium hover:bg-warm-alabaster transition-colors">
+              🛋️ Rich cognac saddle leather, matte blackened steel, honed slate, and vintage runners
+            </button>
+          </div>
+        </div>
+
+        <div id="quizStep3" class="hidden">
+          <p class="text-sm font-bold text-luxe-charcoal mb-3">3. What is your primary design priority?</p>
+          <div class="space-y-2">
+            <button onclick="finishQuiz('japandi')" class="w-full text-left p-3.5 rounded-xl border border-warm-beige hover:border-gold-champagne text-xs font-medium hover:bg-warm-alabaster transition-colors">
+              🌿 "Clutter-free serenity, organic calm, quiet harmony, and breathable negative space."
+            </button>
+            <button onclick="finishQuiz('luxury')" class="w-full text-left p-3.5 rounded-xl border border-warm-beige hover:border-gold-champagne text-xs font-medium hover:bg-warm-alabaster transition-colors">
+              👑 "Grand architectural hospitality, timeless heritage elegance, and impressive entertaining."
+            </button>
+            <button onclick="finishQuiz('modern')" class="w-full text-left p-3.5 rounded-xl border border-warm-beige hover:border-gold-champagne text-xs font-medium hover:bg-warm-alabaster transition-colors">
+              🏙️ "Smart modular living, urban sophistication, ergonomic comfort, and modern flow."
+            </button>
+          </div>
+        </div>
+
+        <div id="quizResult" class="hidden text-center py-4 space-y-4">
+          <div class="w-14 h-14 mx-auto rounded-full bg-warm-alabaster text-gold-antique flex items-center justify-center text-2xl border border-gold-champagne/40">✨</div>
+          <p class="text-[10px] uppercase tracking-widest text-gold-antique font-bold">Your Recommended Aesthetic</p>
+          <h4 id="resultTitle" class="font-serif text-2xl font-bold text-luxe-charcoal"></h4>
+          <p id="resultDescription" class="text-xs text-luxe-stone leading-relaxed"></p>
+          <div id="resultRecommendedRooms" class="text-left p-4 rounded-xl bg-warm-alabaster border border-warm-beige text-xs space-y-1"></div>
+          <button onclick="closeStyleQuiz()" class="px-6 py-2.5 rounded-full bg-luxe-charcoal text-white text-xs font-bold uppercase tracking-wider hover:bg-luxe-slate">
+            Explore Curated Directory
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 hidden px-4 py-2.5 rounded-full bg-luxe-charcoal text-white text-xs font-medium shadow-2xl flex items-center space-x-2 transition-all border border-gold-champagne/30">
+    <svg class="w-4 h-4 text-gold-champagne" fill="currentColor" viewBox="0 0 20 20">
+      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+    </svg>
+    <span id="toastMessage">Action completed</span>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-luxe-charcoal text-warm-alabaster pt-16 pb-12 border-t border-luxe-slate">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-luxe-slate/60">
+        <div class="space-y-4">
+          <span class="font-serif text-2xl font-bold tracking-tight text-white block uppercase cursor-pointer" onclick="switchView('store')">Lume &amp; Luxe</span>
+          <p class="text-xs text-warm-alabaster/70 leading-relaxed">
+            Lume &amp; Luxe is an architectural interior decor publication and bespoke furniture store delivering timeless inspiration, layout playbooks, and certified British craftsmanship.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-serif text-sm font-bold text-white uppercase tracking-wider mb-3">Store Catalogue</h4>
+          <ul class="text-xs space-y-2 text-warm-alabaster/70">
+            <li><button onclick="switchView('store'); setProductCategory('furniture');" class="hover:text-gold-champagne transition-colors">Bespoke Living &amp; Dining Furniture</button></li>
+            <li><button onclick="switchView('store'); setProductCategory('lighting');" class="hover:text-gold-champagne transition-colors">Unlacquered Brass Lighting</button></li>
+            <li><button onclick="switchView('store'); setProductCategory('rugs');" class="hover:text-gold-champagne transition-colors">Hand-Knotted Wools &amp; Runners</button></li>
+            <li><button onclick="switchView('store'); setProductCategory('accents');" class="hover:text-gold-champagne transition-colors">Stoneware &amp; Decor Objects</button></li>
+            <li><button onclick="switchView('store'); setProductCategory('architectural');" class="hover:text-gold-champagne transition-colors">Architectural Slabs &amp; Slats</button></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-serif text-sm font-bold text-white uppercase tracking-wider mb-3">Editorial &amp; Atelier</h4>
+          <ul class="text-xs space-y-2 text-warm-alabaster/70">
+            <li><button onclick="switchView('blog')" class="hover:text-gold-champagne transition-colors">14 Living Zone Playbooks</button></li>
+            <li><button onclick="switchView('about')" class="hover:text-gold-champagne transition-colors">Our Mayfair Story &amp; Ethos</button></li>
+            <li><button onclick="switchView('contact')" class="hover:text-gold-champagne transition-colors">Concierge &amp; Showroom Visits</button></li>
+            <li><button onclick="openStyleQuiz()" class="text-gold-champagne font-semibold hover:text-white transition-colors">Interactive Decor Style Quiz</button></li>
+          </ul>
+        </div>
+        <div class="space-y-3">
+          <h4 class="font-serif text-sm font-bold text-white uppercase tracking-wider">Editorial Standards</h4>
+          <p class="text-xs text-warm-alabaster/70 leading-relaxed">
+            We adhere to rigorous publishing and architectural standards. Our colour swatches are formulated with daylight retention and British architectural heritage in mind.
+          </p>
+          <div class="pt-2">
+            <span class="inline-block text-[10px] uppercase font-bold tracking-widest text-gold-champagne bg-luxe-slate/50 px-3 py-1 rounded border border-gold-champagne/30">
+              UK English Edition &bull; Curated Decor
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-warm-alabaster/50 gap-4">
+        <p>&copy; 2026 Lume &amp; Luxe Decor Collective &amp; Store. All rights reserved.</p>
+        <div class="flex items-center space-x-6">
+          <button onclick="switchView('about')" class="hover:text-gold-champagne">About Us</button>
+          <button onclick="switchView('contact')" class="hover:text-gold-champagne">Contact Concierge</button>
+          <a href="#" class="hover:text-gold-champagne">Terms of Service</a>
+          <a href="#" class="hover:text-gold-champagne">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== JAVASCRIPT STATE, STORE DATA & LOGIC ==================== -->
+  <script>
+    // Supabase Live Backend Configuration
+    const SUPABASE_URL = 'https://nucalxcqhohjgfabenqq.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im51Y2FseGNxaG9oamdmYWJlbnFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxMjkwMzEsImV4cCI6MjEwNzcwNTAzMX0.Oqkdx1BZYaQdU0-Bah_0DABuHmKYYwp7HKKC4m2ugFQ';
+    const supabaseClient = (window.supabase && typeof window.supabase.createClient === 'function')
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      : null;
+
+    // 14 Curated Luxury Products for the Store
+    const lumeProductsData = [
+      {
+        id: "prod-1",
+        title: "The Aurelia Fluted White Oak Dining Table",
+        category: "furniture",
+        price: 2450,
+        rating: 4.9,
+        image: "https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=600&q=80",
+        material: "Solid European White Oak & Beeswax Finish",
+        dimensions: "240cm (L) x 100cm (W) x 76cm (H)",
+        description: "Handcrafted from slow-grown European white oak with dual fluted pillar plinths. Comfortably seats ten guests for banqueting."
+      },
+      {
+        id: "prod-2",
+        title: "The Mayfair Bouclé Curved Sectional Sofa",
+        category: "furniture",
+        price: 3850,
+        rating: 5.0,
+        image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=600&q=80",
+        material: "Heavy-Weight Belgian Wool Bouclé & Hardwood Frame",
+        dimensions: "340cm (W) x 145cm (D) x 74cm (H)",
+        description: "An architectural low-slung silhouette featuring gentle organic curves. Upholstered in tactile, stain-resistant natural wool bouclé."
+      },
+      {
+        id: "prod-3",
+        title: "The Antiqued Brass Branch Chandelier",
+        category: "lighting",
+        price: 1120,
+        rating: 4.8,
+        image: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=600&q=80",
+        material: "Hand-Spun Unlacquered Brass & Frosted Mouth-Blown Glass",
+        dimensions: "120cm (Span) x 65cm (Drop, adjustable)",
+        description: "Six asymmetrical arms of solid hand-rubbed brass holding warm-glow frosted glass globes. Dimmable to a warm 2200K amber glow."
+      },
+      {
+        id: "prod-4",
+        title: "The Nero Marquina Monolith Coffee Table",
+        category: "furniture",
+        price: 1680,
+        rating: 4.9,
+        image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=600&q=80",
+        material: "Authentic Nero Marquina Spanish Marble (Honed)",
+        dimensions: "120cm (L) x 60cm (W) x 32cm (H)",
+        description: "Carved from a singular block of Spanish black marble with striking white calcite veins. Honed matte surface with chamfered edges."
+      },
+      {
+        id: "prod-5",
+        title: "The Calacatta Honed Marble Vessel Basin",
+        category: "architectural",
+        price: 780,
+        rating: 4.9,
+        image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=600&q=80",
+        material: "Solid Italian Calacatta Gold Marble",
+        dimensions: "42cm (Diameter) x 14cm (H)",
+        description: "Monolithic bathroom cloakroom vessel basin with subtle caramel and grey veining. Treated with breathable mineral sealants."
+      },
+      {
+        id: "prod-6",
+        title: "The Alabaster Globe Pendant Light",
+        category: "lighting",
+        price: 420,
+        rating: 4.7,
+        image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=600&q=80",
+        material: "Natural Spanish Alabaster & Patinated Bronze Fitting",
+        dimensions: "25cm (Globe Diameter) x 150cm (Braided Cord)",
+        description: "Carved from translucent genuine stone alabaster. Each sphere features organic cloud veining that radiates serene ambient light."
+      },
+      {
+        id: "prod-7",
+        title: "The Natural Sisal & Brass Stair Runner (Metre)",
+        category: "rugs",
+        price: 320,
+        rating: 4.8,
+        image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80",
+        material: "100% Organic East African Sisal & Cotton Twill Border",
+        dimensions: "68cm (Width) x Sold per 5-Metre Roll",
+        description: "Hard-wearing woven herringbone sisal runner with bound charcoal edges. Reduces stair footstep reverberation by up to 80%."
+      },
+      {
+        id: "prod-8",
+        title: "The Hand-Knotted Wool & Silk Area Rug (240x300cm)",
+        category: "rugs",
+        price: 1950,
+        rating: 5.0,
+        image: "https://images.unsplash.com/photo-1579656381226-5fc0f0100c3b?auto=format&fit=crop&w=600&q=80",
+        material: "Hand-Spun New Zealand Wool & Natural Mulberry Silk",
+        dimensions: "240cm x 300cm",
+        description: "Hand-knotted with over 200,000 knots per square metre. Features an understated broken-line pattern in oatmeal and clotted cream."
+      },
+      {
+        id: "prod-9",
+        title: "The Sculptural Stoneware Urn Vase",
+        category: "accents",
+        price: 185,
+        rating: 4.9,
+        image: "https://images.unsplash.com/photo-1581783342308-f792dbdd27c5?auto=format&fit=crop&w=600&q=80",
+        material: "Coarse Sandy Stoneware with Raw Matte Slip",
+        dimensions: "32cm (Diameter) x 44cm (H)",
+        description: "Hand-thrown pottery vase inspired by classical Cycladic forms. Ideal for tall dried magnolia branches or as a standalone plinth sculpture."
+      },
+      {
+        id: "prod-10",
+        title: "The Belgian Washed Linen Bedding Set (Super King)",
+        category: "rugs",
+        price: 295,
+        rating: 4.9,
+        image: "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=600&q=80",
+        material: "100% Pure Certified French & Belgian Flax (185 GSM)",
+        dimensions: "Duvet: 260x220cm + 2 Oxford Pillowcases",
+        description: "Pre-washed with natural pumice stones for immediate softness. Highly breathable flax regulates body temperature across all British seasons."
+      },
+      {
+        id: "prod-11",
+        title: "The Aged Bronze Pivot Picture Wall Sconce",
+        category: "lighting",
+        price: 240,
+        rating: 4.7,
+        image: "https://images.unsplash.com/photo-1540932239986-30128078f3c5?auto=format&fit=crop&w=600&q=80",
+        material: "Cast Gunmetal Bronze with 2700K Warm LED Strip",
+        dimensions: "45cm (Width) x 18cm (Depth)",
+        description: "Museum-grade 95+ CRI directional LED light designed to highlight framed artwork, bookcases, or powder room mirrors without UV heat."
+      },
+      {
+        id: "prod-12",
+        title: "The Smoked Glass & Brass Drinks Credenza",
+        category: "furniture",
+        price: 2150,
+        rating: 5.0,
+        image: "https://images.unsplash.com/photo-1538688525198-9b88f6f53126?auto=format&fit=crop&w=600&q=80",
+        material: "European Walnut, Fluted Smoked Glass & Brass Hardware",
+        dimensions: "160cm (L) x 48cm (D) x 82cm (H)",
+        description: "Features interior touch-sensor lighting, mirrored backings for crystal glassware, and silent soft-close reeded glass cupboard fronts."
+      },
+      {
+        id: "prod-13",
+        title: "The Honed Travertine Plinth Pedestal",
+        category: "accents",
+        price: 690,
+        rating: 4.8,
+        image: "https://images.unsplash.com/photo-1533090161767-e6ffed986b88?auto=format&fit=crop&w=600&q=80",
+        material: "Roman Honed Travertine with Natural Voids",
+        dimensions: "35cm (Square) x 75cm (H)",
+        description: "Architectural monolithic pedestal displaying classical Roman open cavities and warm beige banding. Supports sculptures up to 120kg."
+      },
+      {
+        id: "prod-14",
+        title: "The Acoustic Fluted Wood Wall Slat Pack (4 Panes)",
+        category: "architectural",
+        price: 480,
+        rating: 4.9,
+        image: "https://images.unsplash.com/photo-1585412727339-54e4bae3bbf9?auto=format&fit=crop&w=600&q=80",
+        material: "Natural Oak Veneer over Recycled Black Acoustic Felt",
+        dimensions: "240cm (H) x 60cm (W) per panel (Covers 5.76 sqm)",
+        description: "Class-A sound absorption panels that eliminate echo in home theatres, bedrooms, and studies while adding architectural depth."
+      }
+    ];
+
+    // 14 Complete Editorial Rooms Data (Retained for the Dedicated Blog View)
+    const lumeRoomsData = [
+      {
+        id: "living-room",
+        title: "The Curated Living Room: Layered Textures & Proportional Seating",
+        shortTitle: "Living Room & Salon",
+        category: "living",
+        aesthetic: "Warm Organic Minimalism",
+        readTime: "7 min read",
+        image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80",
+        overview: "The central gathering hub of the British household balances casual comfort with bespoke architectural tailoring. Low-slung bouclé sectionals, honed travertine slab tables, and floor-grazing Belgian linen voiles establish a light-filled, welcoming environment.",
+        palette: [
+          { name: "Linen Chalk", hex: "#F5F2EB" },
+          { name: "Warm Alabaster", hex: "#E9DFD2" },
+          { name: "Smoked English Oak", hex: "#4A3B32" },
+          { name: "Champagne Gold", hex: "#C5A880" }
+        ],
+        materials: ["Honed Travertine", "Belgian Bouclé", "White Oak Panelling", "Sheer Chiffon Voiles"],
+        luxuryScale: "In grand high-ceilinged drawing halls, anchor the double-volume space with a bespoke 4-metre modular sofa, twin sculptural marble plinths, and floor-to-ceiling bookmatched porcelain feature chimney breasts.",
+        flatScale: "In open-plan apartments, delineate the salon from the dining area using a fluted oak timber slat divider or a low credenza that preserves sightlines while maintaining zoning.",
+        smallScale: "Choose raised, slender-legged sofas and circular glass or mirrored coffee tables. Revealing floor space tricks the eye into perceiving the room up to 30% more spacious.",
+        lighting: [
+          "Ambient: Warm 2700K perimeter cove LED strips concealed in cornicing",
+          "Task: An arched patinated brass floor lamp beside reading armchairs",
+          "Accent: Directional micro-downlights grazing textured canvas artwork"
+        ],
+        goldenRule: "Ensure area rugs extend beneath the front legs of all principal seating by at least 25 centimetres. Scent with cedarwood, vetiver, and smoked tea."
+      },
+      {
+        id: "drawing-room",
+        title: "The Formal Drawing Room: Classical Symmetry & Heritage Splendour",
+        shortTitle: "Formal Drawing Room",
+        category: "living",
+        aesthetic: "Modern Classic & Heritage",
+        readTime: "8 min read",
+        image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+        overview: "A sophisticated salon designed for evening hospitality and conversation. Classical architectural symmetry harmonises with deep mohair velvet armchairs, marble chimneypieces, and museum-quality heritage art.",
+        palette: [
+          { name: "Rich Clotted Cream", hex: "#FAF8F2" },
+          { name: "Highland Moss", hex: "#4A5D3E" },
+          { name: "Antique Gold", hex: "#B39366" },
+          { name: "Charcoal Slate", hex: "#22252A" }
+        ],
+        materials: ["Wool-Silk Wilton Carpet", "Mohair Velvet", "Nero Marquina Marble", "Cast Bronze"],
+        luxuryScale: "Position two matching camelback sofas facing one another across a monumental stone hearth, crowned with an antique gilded convex mirror and a hand-blown glass chandelier.",
+        flatScale: "Introduce classic bespoke wall panelling mouldings (boiserie) painted in a monochrome matte finish to bestow architectural gravitas onto modern drywall.",
+        smallScale: "Swap heavy wingback chairs for open-armed, spindle-back French bergères, and replace dark mahogany tables with slender brass-and-limestone drink tables.",
+        lighting: [
+          "Ambient: Dimmable central chandelier (2400K-2700K dim-to-warm)",
+          "Task: Matching ceramic lamps with silk pleated empire shades on twin pier tables",
+          "Accent: Picture lights fitted with museum-grade high-CRI LEDs above oil canvases"
+        ],
+        goldenRule: "The coffee table arrangement must never obstruct eye contact; group art volumes, a low bronze bowl, and fresh garden peonies."
+      },
+      {
+        id: "dining-room",
+        title: "The Banqueting Dining Room: Sculptural Tables & Ambient Drama",
+        shortTitle: "Dining Room & Banquet",
+        category: "culinary",
+        aesthetic: "Quiet Luxury Entertaining",
+        readTime: "6 min read",
+        image: "https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=1200&q=80",
+        overview: "The theatre of shared meals demands sensory balance. An imposing solid timber table, tailored upholstered dining chairs with ergonomic backrests, and dramatic low-hung lighting establish an intimate evening atmosphere.",
+        palette: [
+          { name: "Parchment White", hex: "#F9F6F0" },
+          { name: "Cognac Amber", hex: "#9C533E" },
+          { name: "Smoked Walnut", hex: "#382C26" },
+          { name: "Champagne Gold", hex: "#C5A880" }
+        ],
+        materials: ["Solid European Walnut", "Calacatta Quartz", "Supple Saddle Leather", "Mouth-blown Glass"],
+        luxuryScale: "Accommodate a 10-to-12 seat solid walnut dining table complemented by a tailored drinks credenza featuring backlit fluted bronze glass cabinetry.",
+        flatScale: "Select an oval dining table to maximise pedestrian circulation around tight perimeters, suspended beneath a contemporary linear multi-bulb pendant.",
+        smallScale: "Implement built-in banquette wall seating with integrated lift-up under-bench storage, paired with an iconic round pedestal tulip table.",
+        lighting: [
+          "Ambient: Soft perimeter cornicing cove lighting on rotary dimmer",
+          "Task: Statement chandelier suspended precisely 75 to 80 centimetres above the tabletop",
+          "Accent: Low-level cabinet interior illumination showcasing fine bone china"
+        ],
+        goldenRule: "Avoid towering centrepieces that bisect conversations across the table; curate low ceramic vessels with seasonal foliage and beeswax dinner candles."
+      },
+      {
+        id: "kitchen",
+        title: "The Architect's Kitchen: Seamless Cabinetry & Island Craftsmanship",
+        shortTitle: "Chef's Kitchen & Island",
+        category: "culinary",
+        aesthetic: "Architectural Japandi",
+        readTime: "9 min read",
+        image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80",
+        overview: "The epicentre of contemporary culinary living. Seamless, handle-free cabinetry, twin waterfall stone islands, integrated appliances, and bespoke larder joinery keep surfaces pristine.",
+        palette: [
+          { name: "Chalk Mist", hex: "#EAE5DC" },
+          { name: "English Sage", hex: "#8A9A86" },
+          { name: "Matte Charcoal", hex: "#292C30" },
+          { name: "Natural Birch", hex: "#D4BA94" }
+        ],
+        materials: ["Honed Quartzite", "Fluted White Oak", "Gunmetal Tapware", "Large-Format Porcelain"],
+        luxuryScale: "Construct a double-island configuration: one dedicated to washing, prep, and concealed bins; the secondary island reserved for social drinks and casual dining.",
+        flatScale: "Run cabinetry uninterrupted to ceiling height to eliminate dust traps and maximise vertical storage, finishing the splashback in the identical quartz as the worktops.",
+        smallScale: "Adopt a single-wall galley layout featuring an induction hob (which doubles as prep surface when cool), pull-out tall larder units, and concealed under-cabinet rails.",
+        lighting: [
+          "Ambient: Flush plaster-in architectural downlights (3000K, CRI 95+)",
+          "Task: Continuous glare-free LED strip light recessed beneath upper cabinets",
+          "Accent: Twin minimalist pendant globes suspended above the breakfast bar"
+        ],
+        goldenRule: "Keep the worktop completely free of clutter; display only an end-grain oak butcher's block, a pestle and mortar, and a potted rosemary topiary."
+      },
+      {
+        id: "master-bedroom",
+        title: "The Master Suite: Hotel-Grade Linens & Serene Sanctuaries",
+        shortTitle: "Master Bedroom Suite",
+        category: "sanctuary",
+        aesthetic: "Cloud Sanctuary & Hotel Chic",
+        readTime: "7 min read",
+        image: "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80",
+        overview: "A restorative retreat dedicated to stillness and recovery. Upholstered wall-to-wall headboards, Belgian washed linens, layered blackout voiles, and soothing acoustic timber slats nurture restorative sleep.",
+        palette: [
+          { name: "Oatmeal Slumber", hex: "#EBE5DB" },
+          { name: "Dusky Taupe", hex: "#B8A99A" },
+          { name: "Midnight Charcoal", hex: "#2D3136" },
+          { name: "Muted Champagne", hex: "#D9C3B0" }
+        ],
+        materials: ["Belgian Washed Linen", "Ribbed Wool Rugs", "Brushed Bronze", "Acoustic Felt"],
+        luxuryScale: "Integrate a private morning coffee lounge with twin occasional armchairs, an adjoining bespoke dressing room with sensor illumination, and automated drapery.",
+        flatScale: "Mount vertical fluted oak acoustic panelling behind the bedhead and hang suspended ceiling drop-pendants to preserve valuable bedside surface space.",
+        smallScale: "Opt for a gas-lift hydraulic storage ottoman bed to house winter duvets and luggage, combined with mirrored wardrobe sliding fronts that double ambient light.",
+        lighting: [
+          "Ambient: Ultra-warm 2400K indirect crown cove ceiling lighting",
+          "Task: Flexible focused bedside reading spotlights with integrated micro-switches",
+          "Accent: Low-level plinth floor sweep light beneath the floating bed frame"
+        ],
+        goldenRule: "Style bedding in layers: four goose-down pillows, two generous European shams, one textured bolster, and an organic waffle-knit throw at the foot."
+      },
+      {
+        id: "study-room",
+        title: "The Executive Study: Library Walls & Mindful Productivity",
+        shortTitle: "Study Room & Home Office",
+        category: "sanctuary",
+        aesthetic: "Modern Executive & Dark Academia",
+        readTime: "8 min read",
+        image: "https://images.unsplash.com/photo-1585412727339-54e4bae3bbf9?auto=format&fit=crop&w=1200&q=80",
+        overview: "A sanctuary for focused contemplation and scholarship. Ergonomic full-grain leather chairs, floor-to-ceiling library shelving, patinated brass picture lights, and clean desktop management.",
+        palette: [
+          { name: "Forest Spruce", hex: "#233F34" },
+          { name: "Warm Parchment", hex: "#F3EFE4" },
+          { name: "Espresso Walnut", hex: "#31231B" },
+          { name: "Antique Gold", hex: "#B39366" }
+        ],
+        materials: ["Smoked Walnut Veneer", "Full-grain Saddle Leather", "Acoustic Cork", "Antiqued Brass"],
+        luxuryScale: "Incorporate a double-height perimeter bookcase complete with a rolling brass ladder, a leather-topped partner's desk, and an iconic lounge armchair.",
+        flatScale: "Position a bespoke floating timber desk facing a window with cityscape views, backed by concealed cabinetry containing printers, routers, and paper trays.",
+        smallScale: "The 'cloffice' concept: Convert an underused alcove or wardrobe with a floating oak desk ledge, overhead shelving, and a comfortable upholstered swivel chair.",
+        lighting: [
+          "Ambient: Diffused low-glare ceiling wash (3000K)",
+          "Task: An adjustable brass architect desk lamp providing crisp 4000K working illumination",
+          "Accent: Integrated vertical LED channels casting warm graze across book spines"
+        ],
+        goldenRule: "Organise volumes either by subject or spine tone, interspersing shelves with sculptural ceramic vessels to introduce negative breathing room."
+      },
+      {
+        id: "children-room",
+        title: "The Children’s Bedroom: Whimsical Murals & Adaptable Joinery",
+        shortTitle: "Children’s Bedroom",
+        category: "family",
+        aesthetic: "Nordic Dreamscape & Pastel Calm",
+        readTime: "6 min read",
+        image: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=1200&q=80",
+        overview: "A space engineered to nurture imagination and serene sleep. Soft rounded edges, botanical or starry wallpapers, adaptable study nooks, and non-toxic natural textiles that grow with the child.",
+        palette: [
+          { name: "Cloud Mist", hex: "#FAF9F6" },
+          { name: "Muted Terracotta", hex: "#CC7A6F" },
+          { name: "Soft Sagebrush", hex: "#A2B29F" },
+          { name: "Warm Biscuit", hex: "#E9C46A" }
+        ],
+        materials: ["Sustainable Scandinavian Birch", "Organic Cotton", "Felt Baskets", "Zero-VOC Paint"],
+        luxuryScale: "Commission bespoke timber playhouse bunk beds with climbing steps, an integrated reading nook below, and an en-suite bathroom.",
+        flatScale: "Utilise a modular trundle bed system with a slide-out lower mattress for sibling or cousin sleepovers, maintaining free central play area during daytime.",
+        smallScale: "Elevated loft beds with an integrated study desk underneath, paired with wall-hung fabric book slings that consume zero square footage.",
+        lighting: [
+          "Ambient: Soft frosted acrylic flush-mount ceiling light with warm glow",
+          "Task: Sturdy clip-on desk lamp with shatterproof LED globe",
+          "Accent: Dimmable warm night light or fiber-optic twinkling constellations"
+        ],
+        goldenRule: "Keep open shelving at low child height to encourage autonomy; children naturally tidy their belongings when baskets are within arm's reach."
+      },
+      {
+        id: "children-playing-area",
+        title: "The Montessori Playroom: Independent Discovery & Creative Nooks",
+        shortTitle: "Playroom & Play Area",
+        category: "family",
+        aesthetic: "Montessori Harmony & Tactile Play",
+        readTime: "7 min read",
+        image: "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=1200&q=80",
+        overview: "An active, secure environment designed for young motor skills and sensory crafts. High-density cushioned play mats, child-accessible timber furniture, indoor climbing arches, and labelled toy organisation.",
+        palette: [
+          { name: "Natural Pine", hex: "#E6C280" },
+          { name: "Dusty Aqua", hex: "#8FA9BA" },
+          { name: "Warm Biscuit", hex: "#EBD5B3" },
+          { name: "Soft Clover", hex: "#7E9273" }
+        ],
+        materials: ["Solid Beechwood", "Non-toxic EVA Foam Mats", "Woven Canvas Bins", "Magnetic Chalk Paint"],
+        luxuryScale: "Dedicate an entire wing with an indoor timber climbing wall, sensory craft wet-station with low sink, indoor wooden slide, and reading teepee tent.",
+        flatScale: "Define a corner zone within the main family room using a neutral plush play mat, low two-tier open cubby shelving, and structured canvas storage bins.",
+        smallScale: "Implement modular foam floor cushions that assemble into castles or fold flat into armchairs, accompanied by a wall-mounted paper roll dispenser.",
+        lighting: [
+          "Ambient: High-lumen, shatter-proof diffused flush ceiling panels",
+          "Task: Focused direct lighting above craft and drawing tables",
+          "Accent: Warm fairy festoon lights draped over indoor play tents"
+        ],
+        goldenRule: "Practice toy rotation: display only six to eight engaging activities simultaneously, keeping the remainder boxed; this eliminates overwhelm and clutter."
+      },
+      {
+        id: "home-theatre",
+        title: "The Private Screening Cinema: Acoustic Suede & Immersive Sound",
+        shortTitle: "Home Cinema & Theatre",
+        category: "family",
+        aesthetic: "Midnight Velvet & Acoustic Luxury",
+        readTime: "8 min read",
+        image: "https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=1200&q=80",
+        overview: "The ultimate cinematic retreat within your home. Tiered motorized reclining seating, acoustic wall panelling, constellation starlight ceilings, and concealed Dolby Atmos surrounds.",
+        palette: [
+          { name: "Midnight Navy", hex: "#0E131F" },
+          { name: "Deep Charcoal", hex: "#1C1D21" },
+          { name: "Warm Amber Glow", hex: "#C5A880" },
+          { name: "Royal Burgundy", hex: "#581825" }
+        ],
+        materials: ["Acoustic Suede Panelling", "Heavy Cut-Pile Carpet", "Reclining Nappa Leather", "Blackout Velvets"],
+        luxuryScale: "A dual-tiered private cinema room with eight motorized leather recliners, an acoustically transparent 160-inch 4K screen, and an adjacent refreshment bar.",
+        flatScale: "Transform a spare bedroom or secondary lounge using an Ultra-Short-Throw (UST) laser projector with an ambient light-rejecting (ALR) screen and deep modular sofas.",
+        smallScale: "A recessed motorized projector screen concealed in ceiling joinery that descends over art walls on demand, paired with a soundbar concealed in credenzas.",
+        lighting: [
+          "Ambient: Complete motorized blackout roller blinds with side channels",
+          "Task: Low-glare recessed floor step LED guide lights",
+          "Accent: Fiber-optic starlight ceiling mimicking realistic Northern constellations"
+        ],
+        goldenRule: "Disguise acoustic dampening panels as geometric fabric art modules so the room retains the feel of an opulent lounge when the screen is powered down."
+      },
+      {
+        id: "powder-room",
+        title: "The Jewel-Box Cloakroom: Dramatic Botanicals & Stone Sinks",
+        shortTitle: "Powder Room & Cloakroom Decor",
+        category: "sanctuary",
+        aesthetic: "Dramatic Jewel Box",
+        readTime: "5 min read",
+        image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80",
+        overview: "The most theatrical space in the home. Intimate dimensions grant license to embrace moody dark botanical wallpapers, monolithic stone basins, aged brass wall-mounted tapware, and halo mirrors.",
+        palette: [
+          { name: "Deep Regency Green", hex: "#1B3F38" },
+          { name: "Obsidian Charcoal", hex: "#191B1D" },
+          { name: "Champagne Gold", hex: "#C5A880" },
+          { name: "Carrara Grey", hex: "#E8E5DF" }
+        ],
+        materials: ["Nero Marquina Marble", "Embossed Wallpaper", "Wall-mounted Brass Faucets", "Fluted Glass"],
+        luxuryScale: "Install a floor-to-ceiling carved marble pedestal basin, paired with hanging pendant drops flanking a tall smoked brass mirror and concealed scent atomisers.",
+        flatScale: "Introduce vertical fluted ceramic wall tiles behind a wall-hung vanity, a circular backlit LED halo mirror, and an in-wall concealed toilet cistern.",
+        smallScale: "Choose a miniature corner stone basin (22cm projection), bold wallpaper on the feature wall, and a frameless ceiling-height mirror to visually double depth.",
+        lighting: [
+          "Ambient: Very low, dimmable 2200K ambient wash",
+          "Task: High-CRI 95+ perimeter mirror illumination for flattering facial reflection",
+          "Accent: Motion-activated low-level sweep light beneath the floating vanity"
+        ],
+        goldenRule: "Always stage with a luxury hand wash and lotion duo (bergamot, fig leaf, or cedarwood) presented on a marble tray with rolled waffle-cotton guest towels."
+      },
+      {
+        id: "master-bathroom",
+        title: "The Spa En-Suite: Honed Limestone & Freestanding Soaking Baths",
+        shortTitle: "Master Bath & Spa En-Suite",
+        category: "sanctuary",
+        aesthetic: "Mediterranean Wellness Spa",
+        readTime: "8 min read",
+        image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1200&q=80",
+        overview: "A restorative wellness sanctuary within the home. Freestanding stone composite soaking baths, curbless walk-in showers with rainfall fittings, double floating timber vanities, and honed limestone surfaces.",
+        palette: [
+          { name: "Travertine Sand", hex: "#D9CAB3" },
+          { name: "Crisp Chalk", hex: "#FDFBF7" },
+          { name: "Eucalyptus Mist", hex: "#9CAF88" },
+          { name: "Gunmetal Slate", hex: "#48494B" }
+        ],
+        materials: ["Honed Roman Travertine", "Fluted Glass Screens", "Solid Teak Duckboards", "Cast Mineral Stone"],
+        luxuryScale: "Position an oval stone composite tub overlooking a secluded private courtyard garden, alongside a steam shower equipped with twin heads, bench, and aromatherapy.",
+        flatScale: "Install a wet-room shower with a linear floor drain, a recessed shampoo niche with an integrated waterproof LED strip, and an anti-fog touch mirror.",
+        smallScale: "Implement a sliding fluted glass shower screen instead of outward-swinging doors, with deep vanity drawers fitted with internal electrical sockets for hair dryers.",
+        lighting: [
+          "Ambient: IP65 waterproof recessed ceiling downlights on dimmer control",
+          "Task: Eye-level vertical wall sconces flanking the mirror to eliminate facial shadows",
+          "Accent: Recessed shampoo niche amber glow LED"
+        ],
+        goldenRule: "Incorporate a timber bath caddy carrying natural sea sponges, bath salts in apothecary jars, and hang fresh eucalyptus branches inside the steam zone."
+      },
+      {
+        id: "stairs-decoration",
+        title: "The Architectural Stairwell: Cantilevered Treads & Void Pendants",
+        shortTitle: "Staircase & Stairwell Decor",
+        category: "architectural",
+        aesthetic: "Sculptural Architectural Art",
+        readTime: "7 min read",
+        image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        overview: "The vertical spine of the house, bridging floors with sculptural rhythm. Cantilevered floating oak treads, structural glass balustrading, cascading multi-tier void pendants, and under-stair garden features.",
+        palette: [
+          { name: "White Oak Tread", hex: "#D1B280" },
+          { name: "Architectural Charcoal", hex: "#1A1C1E" },
+          { name: "Limewash Chalk", hex: "#F5F3EF" },
+          { name: "Warm Amber Glow", hex: "#C5A880" }
+        ],
+        materials: ["European White Oak", "Tempered Structural Glass", "Herringbone Sisal Carpet", "Smooth River Pebbles"],
+        luxuryScale: "A double-height stairwell hall illuminated by a 20-drop glass chandelier, featuring sweeping curved plaster balustrades and an under-stair zen olive tree court.",
+        flatScale: "A timber open-tread staircase screened with full-height vertical wooden slats functioning as both safety rail and graphic architectural divider.",
+        smallScale: "Custom under-stair pull-out joinery: concealed deep push-to-open shoe drawers, coat cupboards, or an integrated reading alcove seat.",
+        lighting: [
+          "Ambient: Cascading pendant feature suspended in the central vertical void",
+          "Task: Recessed micro-LED step lights (1W, 2700K) set into the baseboard on every third tread",
+          "Accent: Floor-recessed spotlights grazing the limewash or stone wall surface"
+        ],
+        goldenRule: "A stair runner carpet (natural sisal or wool) secured with burnished brass stair rods adds heritage refinement and reduces footstep noise by up to 80%."
+      },
+      {
+        id: "backyard-patio",
+        title: "The Alfresco Living Room: Bioclimatic Pergolas & Sunken Firepits",
+        shortTitle: "Backyard, Patio & Garden Decor",
+        category: "architectural",
+        aesthetic: "Biophilic Alfresco Living",
+        readTime: "8 min read",
+        image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=80",
+        overview: "Extending interior comfort under open skies. Automated louvred bioclimatic pergolas, weather-resistant teak dining, sunken firepit conversations, and architectural botanical lighting.",
+        palette: [
+          { name: "Weathered Teak", hex: "#9E7B56" },
+          { name: "Cotswold Stone", hex: "#D6D1C7" },
+          { name: "Olive Leaf", hex: "#4E5D42" },
+          { name: "Slate Charcoal", hex: "#3A3D40" }
+        ],
+        materials: ["Grade-A Indonesian Teak", "Outdoor Solution-dyed Fabric", "Porcelain Garden Pavers", "Cast Concrete"],
+        luxuryScale: "A motorized bioclimatic pergola with integrated infrared heaters, an outdoor chef's kitchen with wood-fired pizza oven, sunken firepit, and plunge pool.",
+        flatScale: "Balcony or roof terrace sanctuary: a compact synthetic weave sofa with outdoor wool rug, a vertical living herb wall, and warm festoon bistro lighting.",
+        smallScale: "Courtyard garden: built-in cedar perimeter benching with planter boxes behind, a central tabletop stone fire bowl, and folding French bistro chairs.",
+        lighting: [
+          "Ambient: Warm overhead bistro festoon lights (2200K) crisscrossing pergola beams",
+          "Task: Downlighting over the outdoor preparation and barbecue counters",
+          "Accent: Low-voltage ground spike spotlights illuminating specimen trees and ferns"
+        ],
+        goldenRule: "Use matching indoor and outdoor floor tiles across patio threshold doors to establish a flush, seamless continuity between interior and garden."
+      },
+      {
+        id: "entrance-foyer",
+        title: "The Grand Entrance Hall: Bespoke Consoles & First Impressions",
+        shortTitle: "Entrance Hall & Foyer Decor",
+        category: "architectural",
+        aesthetic: "Timeless First Impression",
+        readTime: "6 min read",
+        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80",
+        overview: "The opening overture to the home. Oversized arched antiqued mirrors, floating fluted oak consoles, ceramic catch-all trays for daily essentials, and welcoming signature scents.",
+        palette: [
+          { name: "Pristine Chalk", hex: "#F7F5F0" },
+          { name: "Aged Brass", hex: "#B39366" },
+          { name: "Warm Taupe", hex: "#A89887" },
+          { name: "Belgian Noir", hex: "#1D1D1D" }
+        ],
+        materials: ["Bookmatched Marble Flooring", "Fluted Oak Consoles", "Antiqued Glass", "Stoneware Urns"],
+        luxuryScale: "A double-door grand vestibule opening into a double-height hall with a circular marble centre table, crowned by an urn of tall blossoming magnolia boughs.",
+        flatScale: "A shallow-depth floating timber console table with a backlit circular mirror above, concealed wall-panel shoe cupboards, and brass coat pegs.",
+        smallScale: "A floor-to-ceiling mirror positioned adjacent to the entrance door to bounce daylight, combined with a narrow shelf, key tray, and an organic wool runner.",
+        lighting: [
+          "Ambient: Statement alabaster bowl pendant or lantern fixture",
+          "Task: Wall-mounted pivoting brass art lights highlighting framed sketches",
+          "Accent: Concealed motion-sensor under-console floor sweep LED"
+        ],
+        goldenRule: "Place an artisanal reed diffuser containing white tea, fig, or bergamot at the entryway; pleasant olfactory cues instantly comfort guests upon crossing the threshold."
+      }
+    ];
+
+    // State Variables
+    let currentView = 'store';
+    let currentProductCat = 'all';
+    let currentBlogCat = 'all';
+    let currentScale = 'all';
+    let globalSearchQuery = '';
+    let currentModalRoom = null;
+    let currentModalProduct = null;
+
+    // Local Storage State: Cart & Pinned Rooms
+    let cart = JSON.parse(localStorage.getItem('lumeluxe_cart') || '[]');
+    let pinnedRooms = JSON.parse(localStorage.getItem('lumeluxe_pinned_rooms') || '[]');
+    let quizAnswers = {};
+
+    // Initialization
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Connect to live Supabase products if table exists
+      if (supabaseClient) {
+        try {
+          const { data, error } = await supabaseClient.from('products').select('*');
+          if (!error && data && data.length > 0) {
+            lumeProductsData.length = 0;
+            data.forEach(p => lumeProductsData.push({
+              id: p.id,
+              title: p.title,
+              category: p.category,
+              price: parseFloat(p.price),
+              rating: parseFloat(p.rating || 5.0),
+              image: p.image,
+              material: p.material,
+              dimensions: p.dimensions,
+              description: p.description
+            }));
+            console.log("Loaded " + data.length + " live products from Supabase.");
+          }
+        } catch (err) {
+          console.warn("Using fallback local catalogue:", err);
+        }
+      }
+      renderProducts();
+      renderBlogCards();
+      updateCartUI();
+      updateMoodboardCount();
+      renderMoodboardList();
+    });
+
+    // View Navigation Switcher (Store vs Blog vs About vs Contact)
+    function switchView(viewName) {
+      currentView = viewName;
+      document.querySelectorAll('.view-panel').forEach(panel => panel.classList.add('hidden'));
+      document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.classList.remove('text-luxe-charcoal', 'border-b-2', 'border-gold-champagne', 'font-bold');
+        tab.classList.add('text-luxe-slate');
+      });
+
+      const activePanel = document.getElementById(`view-${viewName}`);
+      const activeTab = document.getElementById(`tab-${viewName}`);
+      
+      if (activePanel) activePanel.classList.remove('hidden');
+      if (activeTab) {
+        activeTab.classList.add('text-luxe-charcoal', 'border-b-2', 'border-gold-champagne', 'font-bold');
+        activeTab.classList.remove('text-luxe-slate');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Global Search (filters products or blog cards according to active view)
+    function handleGlobalSearch() {
+      globalSearchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+      renderProducts();
+      renderBlogCards();
+    }
+
+    // ==================== STORE LOGIC & RENDERING ====================
+    function setProductCategory(cat) {
+      currentProductCat = cat;
+      document.querySelectorAll('.pcat-btn').forEach(b => {
+        b.classList.remove('bg-luxe-charcoal', 'text-warm-white', 'font-semibold');
+        b.classList.add('text-luxe-stone', 'font-medium');
+      });
+      const activeBtn = document.getElementById(`pcat-${cat}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-luxe-charcoal', 'text-warm-white', 'font-semibold');
+        activeBtn.classList.remove('text-luxe-stone', 'font-medium');
+      }
+      renderProducts();
+    }
+
+    function sortProducts() {
+      renderProducts();
+    }
+
+    function resetStoreFilters() {
+      currentProductCat = 'all';
+      globalSearchQuery = '';
+      document.getElementById('searchInput').value = '';
+      document.getElementById('productSort').value = 'featured';
+      setProductCategory('all');
+      renderProducts();
+    }
+
+    function renderProducts() {
+      const container = document.getElementById('productsGrid');
+      const noResults = document.getElementById('noProductsFound');
+      const countEl = document.getElementById('productResultsCount');
+      const sortVal = document.getElementById('productSort').value;
+
+      let filtered = lumeProductsData.filter(p => {
+        const matchesCategory = currentProductCat === 'all' || p.category === currentProductCat;
+        const matchesSearch = globalSearchQuery === '' ||
+          p.title.toLowerCase().includes(globalSearchQuery) ||
+          p.material.toLowerCase().includes(globalSearchQuery) ||
+          p.category.toLowerCase().includes(globalSearchQuery) ||
+          p.description.toLowerCase().includes(globalSearchQuery);
+        return matchesCategory && matchesSearch;
+      });
+
+      // Sorting
+      if (sortVal === 'low-high') {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sortVal === 'high-low') {
+        filtered.sort((a, b) => b.price - a.price);
+      } else if (sortVal === 'rating') {
+        filtered.sort((a, b) => b.rating - a.rating);
+      }
+
+      countEl.textContent = `Showing ${filtered.length} Product${filtered.length === 1 ? '' : 's'}`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        noResults.classList.remove('hidden');
+        return;
+      } else {
+        noResults.classList.add('hidden');
+      }
+
+      container.innerHTML = filtered.map(p => `
+        <div class="group bg-white rounded-2xl overflow-hidden border border-warm-beige luxe-shadow hover:border-gold-champagne transition-all duration-300 flex flex-col justify-between">
+          
+          <div class="relative h-64 overflow-hidden cursor-pointer" onclick="openProductModal('${p.id}')">
+            <img src="${p.image}" alt="${p.title}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            
+            <span class="absolute top-3 left-3 text-[9px] uppercase font-bold tracking-widest px-2.5 py-1 rounded bg-white/95 text-luxe-charcoal shadow-xs backdrop-blur-xs">
+              ${p.category}
+            </span>
+
+            <button onclick="event.stopPropagation(); addToCart('${p.id}')" title="Quick Add to Bag" class="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-luxe-charcoal text-white hover:bg-gold-champagne hover:text-luxe-charcoal flex items-center justify-center transition-all shadow-md">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            </button>
+          </div>
+
+          <div class="p-4 sm:p-5 space-y-2 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between text-[11px] text-luxe-muted mb-1">
+                <span>⭐ ${p.rating.toFixed(1)} &bull; Made in UK</span>
+                <span class="text-emerald-700 font-semibold">In Stock</span>
+              </div>
+              
+              <h4 class="font-serif text-sm font-bold text-luxe-charcoal group-hover:text-gold-antique transition-colors leading-snug cursor-pointer" onclick="openProductModal('${p.id}')">
+                ${p.title}
+              </h4>
+              
+              <p class="text-[11px] text-luxe-stone line-clamp-2 mt-1">
+                ${p.material}
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-warm-alabaster flex items-center justify-between">
+              <span class="font-serif text-base font-bold text-luxe-charcoal">
+                £${p.price.toLocaleString('en-GB')}
+              </span>
+              <button onclick="openProductModal('${p.id}')" class="text-xs font-semibold text-gold-antique hover:underline">
+                Quick View &rarr;
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      `).join('');
+    }
+
+    // Product Modal Quick-View
+    function openProductModal(productId) {
+      const prod = lumeProductsData.find(p => p.id === productId);
+      if (!prod) return;
+      currentModalProduct = prod;
+
+      document.getElementById('pmImage').src = prod.image;
+      document.getElementById('pmCategory').textContent = prod.category;
+      document.getElementById('pmTitle').textContent = prod.title;
+      document.getElementById('pmPrice').textContent = `£${prod.price.toLocaleString('en-GB')}`;
+      document.getElementById('pmDescription').textContent = prod.description;
+      document.getElementById('pmMaterial').textContent = prod.material;
+      document.getElementById('pmDimensions').textContent = prod.dimensions;
+
+      const btn = document.getElementById('pmAddButton');
+      btn.onclick = () => {
+        addToCart(prod.id);
+        closeProductModal();
+      };
+
+      document.getElementById('productModal').classList.remove('hidden');
+    }
+
+    function closeProductModal() {
+      document.getElementById('productModal').classList.add('hidden');
+    }
+
+    // Shopping Bag Cart Management
+    function addToCart(productId) {
+      const prod = lumeProductsData.find(p => p.id === productId);
+      if (!prod) return;
+
+      const existing = cart.find(item => item.id === productId);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ ...prod, quantity: 1 });
+      }
+
+      saveCart();
+      updateCartUI();
+      showToast(`Added ${prod.title.slice(0, 24)}... to bag ✨`);
+      toggleCart(true);
+    }
+
+    function updateCartQuantity(productId, delta) {
+      const item = cart.find(i => i.id === productId);
+      if (!item) return;
+
+      item.quantity += delta;
+      if (item.quantity <= 0) {
+        cart = cart.filter(i => i.id !== productId);
+      }
+
+      saveCart();
+      updateCartUI();
+    }
+
+    function removeFromCart(productId) {
+      cart = cart.filter(i => i.id !== productId);
+      saveCart();
+      updateCartUI();
+      showToast("Item removed from your bag");
+    }
+
+    function saveCart() {
+      localStorage.setItem('lumeluxe_cart', JSON.stringify(cart));
+    }
+
+    function toggleCart(show) {
+      const drawer = document.getElementById('cartDrawer');
+      if (show) {
+        drawer.classList.remove('translate-x-full');
+      } else {
+        drawer.classList.add('translate-x-full');
+      }
+    }
+
+    function updateCartUI() {
+      const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+      document.getElementById('cartCount').textContent = totalCount;
+      document.getElementById('cartSubtotal').textContent = `£${subtotal.toLocaleString('en-GB', { minimumFractionDigits: 2 })}`;
+
+      // Free shipping threshold (£250)
+      const bar = document.getElementById('freeShippingBar');
+      const statusText = document.getElementById('freeShippingText');
+      const statusPill = document.getElementById('freeShippingStatus');
+
+      if (subtotal >= 250) {
+        bar.style.width = '100%';
+        bar.className = 'bg-emerald-600 h-full rounded-full';
+        statusText.textContent = "You've unlocked Complimentary White-Glove UK Delivery!";
+        statusPill.textContent = "Unlocked";
+        statusPill.className = "text-emerald-700 font-bold";
+      } else {
+        const pct = Math.min(100, Math.round((subtotal / 250) * 100));
+        bar.style.width = `${pct}%`;
+        bar.className = 'bg-gold-champagne h-full rounded-full';
+        const remaining = 250 - subtotal;
+        statusText.textContent = `Add £${remaining.toLocaleString('en-GB')} more for Complimentary UK Delivery`;
+        statusPill.textContent = `${pct}%`;
+        statusPill.className = "text-luxe-stone";
+      }
+
+      // Render Items in Drawer
+      const container = document.getElementById('cartItemsList');
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-16 text-luxe-muted">
+            <svg class="w-12 h-12 mx-auto mb-3 opacity-30 text-gold-champagne" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+            <p class="font-serif text-sm font-bold text-luxe-charcoal">Your shopping bag is empty.</p>
+            <p class="text-xs text-luxe-stone mt-1">Explore our curated furniture and lighting catalogue.</p>
+            <button onclick="toggleCart(false); switchView('store');" class="mt-4 px-4 py-2 rounded-full bg-luxe-charcoal text-white text-xs font-semibold">
+              Browse Store
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = cart.map(item => `
+        <div class="flex items-center space-x-3 p-3 rounded-xl border border-warm-beige bg-warm-alabaster">
+          <img src="${item.image}" alt="${item.title}" class="w-16 h-16 rounded-lg object-cover shrink-0">
+          <div class="flex-1 min-w-0">
+            <h5 class="font-serif text-xs font-bold text-luxe-charcoal truncate">${item.title}</h5>
+            <p class="text-[11px] font-semibold text-gold-antique">£${item.price.toLocaleString('en-GB')}</p>
+            
+            <div class="flex items-center space-x-2 mt-2">
+              <div class="flex items-center border border-warm-beige rounded bg-white text-xs">
+                <button onclick="updateCartQuantity('${item.id}', -1)" class="px-2 py-0.5 hover:bg-warm-alabaster text-luxe-charcoal">&minus;</button>
+                <span class="px-2 py-0.5 font-semibold text-xs">${item.quantity}</span>
+                <button onclick="updateCartQuantity('${item.id}', 1)" class="px-2 py-0.5 hover:bg-warm-alabaster text-luxe-charcoal">&plus;</button>
+              </div>
+              <button onclick="removeFromCart('${item.id}')" class="text-[10px] text-red-600 hover:underline">Remove</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ==================== CHECKOUT & ORDER HANDLING ====================
+    function openCheckoutModal() {
+      if (cart.length === 0) {
+        showToast("Your shopping bag is currently empty.");
+        return;
+      }
+      toggleCart(false); // Close slide-out drawer
+
+      // Calculate totals
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      const shippingFee = subtotal >= 250 ? 0 : 45;
+      const totalAmount = subtotal + shippingFee;
+
+      // Populate summary breakdown
+      document.getElementById('checkoutSummarySubtotal').textContent = `£${subtotal.toLocaleString('en-GB')}`;
+      document.getElementById('checkoutSummaryShipping').textContent = shippingFee === 0 ? 'Complimentary' : `£${shippingFee}`;
+      document.getElementById('checkoutSummaryTotal').textContent = `£${totalAmount.toLocaleString('en-GB')}`;
+
+      const itemsContainer = document.getElementById('checkoutSummaryItems');
+      itemsContainer.innerHTML = cart.map(item => `
+        <div class="flex items-center space-x-3 py-2 border-b border-warm-beige/60">
+          <img src="${item.image}" alt="${item.title}" class="w-10 h-10 rounded object-cover border border-warm-beige shrink-0">
+          <div class="flex-1 min-w-0">
+            <p class="font-serif font-bold text-luxe-charcoal truncate text-xs">${item.title}</p>
+            <p class="text-[10px] text-luxe-muted">Qty: ${item.quantity} &times; £${item.price.toLocaleString('en-GB')}</p>
+          </div>
+          <span class="font-serif font-bold text-xs text-luxe-charcoal shrink-0">£${(item.price * item.quantity).toLocaleString('en-GB')}</span>
+        </div>
+      `).join('');
+
+      document.getElementById('checkoutModal').classList.remove('hidden');
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('checkoutModal').classList.add('hidden');
+    }
+
+    function closeOrderSuccessModal() {
+      document.getElementById('orderSuccessModal').classList.add('hidden');
+    }
+
+    async function handleOrderCheckoutSubmit(e) {
+      e.preventDefault();
+      if (cart.length === 0) {
+        showToast("Your shopping bag is empty.");
+        closeCheckoutModal();
+        return;
+      }
+
+      const submitBtn = document.getElementById('checkoutSubmitBtn');
+      const originalBtnText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>Transmitting to Supabase Atelier...</span>
+      `;
+
+      const fullName = document.getElementById('checkoutFullName').value.trim();
+      const email = document.getElementById('checkoutEmail').value.trim();
+      const phone = document.getElementById('checkoutPhone').value.trim();
+      const street = document.getElementById('checkoutStreet').value.trim();
+      const city = document.getElementById('checkoutCity').value.trim();
+      const country = document.getElementById('checkoutCountry').value;
+      const postal = document.getElementById('checkoutPostal').value.trim();
+      const notes = document.getElementById('checkoutNotes').value.trim();
+
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      const shippingFee = subtotal >= 250 ? 0 : 45;
+      const totalAmount = subtotal + shippingFee;
+
+      const orderRef = 'LL-' + Math.floor(100000 + Math.random() * 900000);
+      const orderId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : ('LL-' + Date.now() + '-' + Math.random().toString(36).substring(2, 9));
+
+      let orderSaved = false;
+      let orderErrorMessage = null;
+
+      if (supabaseClient) {
+        try {
+          // Attempt 1: Full payload including phone, country, notes
+          let orderPayload = {
+            id: orderId,
+            order_reference: orderRef,
+            customer_name: fullName,
+            customer_email: email,
+            phone: phone,
+            shipping_address: street,
+            city: city,
+            country: country,
+            postal_code: postal,
+            notes: notes || null,
+            subtotal: subtotal,
+            shipping_fee: shippingFee,
+            total_amount: totalAmount,
+            status: 'pending'
+          };
+
+          // Notice: DO NOT use .select() here so it does not trigger RLS SELECT permission failure!
+          let { error: insertErr } = await supabaseClient.from('orders').insert([orderPayload]);
+
+          // Fallback if country/phone columns not in table yet
+          if (insertErr && (insertErr.code === 'PGRST204' || (insertErr.message && insertErr.message.includes('column')))) {
+            console.warn("Retrying order with formatted shipping_address fallback...");
+            delete orderPayload.phone;
+            delete orderPayload.country;
+            delete orderPayload.notes;
+            orderPayload.shipping_address = `${street}, ${city}, ${country} (Tel: ${phone})${notes ? ' - Note: ' + notes : ''}`;
+            const retry = await supabaseClient.from('orders').insert([orderPayload]);
+            insertErr = retry.error;
+          }
+
+          if (insertErr) {
+            console.error("Supabase order error:", insertErr);
+            orderErrorMessage = insertErr.message;
+          } else {
+            orderSaved = true;
+            // Now insert individual items
+            const itemsToInsert = cart.map(item => ({
+              order_id: orderId,
+              product_id: item.id,
+              product_title: item.title,
+              unit_price: item.price,
+              quantity: item.quantity,
+              total_price: item.price * item.quantity
+            }));
+            const { error: itemsErr } = await supabaseClient.from('order_items').insert(itemsToInsert);
+            if (itemsErr) {
+              console.warn("Note on order_items insert:", itemsErr.message);
+            }
+          }
+        } catch (err) {
+          console.error("Network exception submitting order:", err);
+          orderErrorMessage = err.message || "Network error";
+        }
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnText;
+
+      if (!orderSaved && supabaseClient && orderErrorMessage) {
+        alert("Database notice: Could not register order directly in Supabase: " + orderErrorMessage + "\nPlease check your connection.");
+        return;
+      }
+
+      // Success flow!
+      closeCheckoutModal();
+      document.getElementById('checkoutForm').reset();
+
+      // Show success modal
+      document.getElementById('successOrderRef').textContent = orderRef;
+      document.getElementById('successCustomerName').textContent = fullName;
+      document.getElementById('successShippingAddress').textContent = `${street}, ${city}, ${country}`;
+      document.getElementById('successTotalAmount').textContent = `£${totalAmount.toLocaleString('en-GB')}`;
+      document.getElementById('orderSuccessModal').classList.remove('hidden');
+
+      // Clear cart
+      cart = [];
+      saveCart();
+      updateCartUI();
+      showToast("Order " + orderRef + " successfully placed!");
+    }
+
+    // ==================== BLOG / ROOM PLAYBOOKS LOGIC ====================
+    function setBlogCategory(cat) {
+      currentBlogCat = cat;
+      document.querySelectorAll('.bcat-btn').forEach(b => {
+        b.classList.remove('bg-luxe-charcoal', 'text-white', 'font-semibold');
+        b.classList.add('text-luxe-stone');
+      });
+      const activeBtn = document.getElementById(`bcat-${cat}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-luxe-charcoal', 'text-white', 'font-semibold');
+        activeBtn.classList.remove('text-luxe-stone');
+      }
+      renderBlogCards();
+    }
+
+    function setPropertyScale(scale) {
+      currentScale = scale;
+      document.querySelectorAll('.scale-btn').forEach(btn => {
+        btn.classList.remove('active-scale', 'bg-luxe-charcoal', 'text-warm-white');
+        btn.classList.add('text-luxe-stone');
+      });
+      const activeBtn = document.getElementById(`scale-${scale}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active-scale', 'bg-luxe-charcoal', 'text-warm-white');
+        activeBtn.classList.remove('text-luxe-stone');
+      }
+      renderBlogCards();
+    }
+
+    function renderBlogCards() {
+      const container = document.getElementById('blogRoomsGrid');
+      if (!container) return;
+
+      const filtered = lumeRoomsData.filter(room => {
+        const matchesCategory = currentBlogCat === 'all' || room.category === currentBlogCat;
+        const matchesSearch = globalSearchQuery === '' ||
+          room.title.toLowerCase().includes(globalSearchQuery) ||
+          room.aesthetic.toLowerCase().includes(globalSearchQuery) ||
+          room.overview.toLowerCase().includes(globalSearchQuery) ||
+          room.materials.some(m => m.toLowerCase().includes(globalSearchQuery)) ||
+          room.luxuryScale.toLowerCase().includes(globalSearchQuery);
+        return matchesCategory && matchesSearch;
+      });
+
+      container.innerHTML = filtered.map(room => {
+        const isPinned = pinnedRooms.includes(room.id);
+        
+        let scaleAdvice = room.overview;
+        let scalePill = "Playbook Guide";
+        if (currentScale === 'luxury') {
+          scaleAdvice = room.luxuryScale;
+          scalePill = "Estate Scope";
+        } else if (currentScale === 'flat') {
+          scaleAdvice = room.flatScale;
+          scalePill = "City Flat Scope";
+        } else if (currentScale === 'small') {
+          scaleAdvice = room.smallScale;
+          scalePill = "Compact Space Scope";
+        }
+
+        return `
+          <article class="bg-white rounded-xl overflow-hidden border border-warm-beige luxe-shadow hover:border-gold-champagne transition-all duration-300 flex flex-col justify-between group">
+            <div class="relative h-60 overflow-hidden cursor-pointer" onclick="openModal('${room.id}')">
+              <img src="${room.image}" alt="${room.title}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+              
+              <span class="absolute top-3 left-3 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md bg-white/95 text-luxe-charcoal shadow-sm backdrop-blur-xs border border-warm-beige">
+                ${room.aesthetic}
+              </span>
+
+              <button onclick="event.stopPropagation(); togglePin('${room.id}')" title="${isPinned ? 'Remove from Notebook' : 'Save to Notebook'}" class="absolute top-3 right-3 w-8 h-8 rounded-full ${isPinned ? 'bg-gold-champagne text-luxe-charcoal' : 'bg-white/85 text-luxe-stone hover:bg-white hover:text-luxe-charcoal'} flex items-center justify-center transition-all shadow-sm">
+                <svg class="w-4 h-4" fill="${isPinned ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                </svg>
+              </button>
+
+              <div class="absolute bottom-3 left-3">
+                <span class="text-[10px] font-bold uppercase tracking-widest text-white drop-shadow-md">
+                  ${scalePill}
+                </span>
+              </div>
+            </div>
+
+            <div class="p-5 space-y-3.5 flex-1 flex flex-col justify-between">
+              <div class="space-y-1.5">
+                <div class="flex items-center space-x-2 text-[11px] text-luxe-muted">
+                  <span class="text-gold-antique font-semibold uppercase tracking-wider text-[10px]">Lume &amp; Luxe Decor</span>
+                  <span>&bull;</span>
+                  <span>${room.readTime}</span>
+                </div>
+
+                <h3 class="font-serif text-lg sm:text-xl font-bold text-luxe-charcoal group-hover:text-gold-antique leading-snug cursor-pointer transition-colors" onclick="openModal('${room.id}')">
+                  ${room.title}
+                </h3>
+
+                <p class="text-xs text-luxe-stone line-clamp-3 leading-relaxed">
+                  ${scaleAdvice}
+                </p>
+              </div>
+
+              <div class="pt-2 border-t border-warm-alabaster">
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-luxe-muted">Formulated Palette</span>
+                  <span class="text-[9px] text-luxe-muted">Click to copy</span>
+                </div>
+                <div class="grid grid-cols-4 gap-1.5">
+                  ${room.palette.map(p => `
+                    <div onclick="copyHex('${p.hex}')" title="${p.name} (${p.hex})" class="cursor-pointer group/swatch flex flex-col items-center">
+                      <div class="w-full h-5 rounded border border-black/10 transition-transform group-hover/swatch:scale-105" style="background-color: ${p.hex}"></div>
+                      <span class="text-[9px] font-mono text-luxe-stone mt-0.5 uppercase">${p.hex}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-warm-alabaster flex items-center justify-between">
+                <button onclick="openModal('${room.id}')" class="text-xs font-bold text-luxe-charcoal hover:text-gold-antique transition-colors inline-flex items-center space-x-1">
+                  <span>View Decor Playbook</span>
+                  <svg class="w-3.5 h-3.5 text-gold-champagne" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+                <button onclick="togglePin('${room.id}')" class="text-xs ${isPinned ? 'text-gold-antique font-bold' : 'text-luxe-muted hover:text-luxe-charcoal'}">
+                  ${isPinned ? 'Saved' : 'Save'}
+                </button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // Contact Form Submission Handler (Connected to Supabase)
+    async function handleContactSubmit(e) {
+      e.preventDefault();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = "Transmitting to Concierge...";
+      submitBtn.disabled = true;
+
+      const firstName = document.getElementById('contactFirstName')?.value || '';
+      const lastName = document.getElementById('contactLastName')?.value || '';
+      const email = document.getElementById('contactEmail')?.value || '';
+      const phone = document.getElementById('contactPhone')?.value || '';
+      const enquiryType = document.getElementById('contactType')?.value || 'Private Interior Styling';
+      const message = document.getElementById('contactMessage')?.value || '';
+
+      let savedInDatabase = false;
+      if (supabaseClient) {
+        try {
+          const { error } = await supabaseClient.from('enquiries').insert([{
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            phone: phone,
+            enquiry_type: enquiryType,
+            message: message,
+            status: 'new'
+          }]);
+          if (!error) savedInDatabase = true;
+          else console.warn("Supabase enquiry note:", error.message);
+        } catch (err) {
+          console.warn("Supabase network note:", err);
+        }
+      }
+
+      submitBtn.textContent = originalText;
+      submitBtn.disabled = false;
+      document.getElementById('contactForm').reset();
+      
+      const successNotice = savedInDatabase 
+        ? "Thank you. Your enquiry has been recorded in our Mayfair Supabase database. A specialist advisor will be in touch within 24 hours."
+        : "Thank you. Your enquiry has been dispatched directly to the Lume & Luxe Concierge Desk at 42 Mount Street, Mayfair. A specialist advisor will be in touch within 24 hours.";
+      
+      alert(successNotice);
+      showToast("Message successfully sent to Mayfair Atelier");
+    }
+
+    // Modal Room Article Details
+    function openModal(roomId) {
+      const room = lumeRoomsData.find(r => r.id === roomId);
+      if (!room) return;
+      currentModalRoom = room;
+
+      document.getElementById('modalImage').src = room.image;
+      document.getElementById('modalTitle').textContent = room.title;
+      document.getElementById('modalAestheticTag').textContent = room.aesthetic;
+      document.getElementById('modalOverview').textContent = room.overview;
+      document.getElementById('modalReadTime').textContent = room.readTime;
+      
+      document.getElementById('modalLuxuryScale').textContent = room.luxuryScale;
+      document.getElementById('modalFlatScale').textContent = room.flatScale;
+      document.getElementById('modalSmallScale').textContent = room.smallScale;
+      document.getElementById('modalGoldenRule').textContent = room.goldenRule;
+
+      const paletteContainer = document.getElementById('modalPalette');
+      paletteContainer.innerHTML = room.palette.map(p => `
+        <div onclick="copyHex('${p.hex}')" class="cursor-pointer p-3 rounded-lg border border-warm-beige bg-white hover:border-gold-champagne transition-all flex items-center space-x-3">
+          <div class="w-7 h-7 rounded border border-black/10 shrink-0" style="background-color: ${p.hex}"></div>
+          <div>
+            <p class="text-xs font-bold text-luxe-charcoal">${p.name}</p>
+            <p class="text-[10px] font-mono text-luxe-muted uppercase">${p.hex}</p>
+          </div>
+        </div>
+      `).join('');
+
+      const lightingContainer = document.getElementById('modalLighting');
+      lightingContainer.innerHTML = room.lighting.map(l => `
+        <li class="flex items-start space-x-2">
+          <span class="text-gold-champagne font-bold">&bull;</span>
+          <span>${l}</span>
+        </li>
+      `).join('');
+
+      const materialsContainer = document.getElementById('modalMaterials');
+      materialsContainer.innerHTML = room.materials.map(m => `
+        <span class="text-xs px-2.5 py-1 rounded bg-white text-luxe-stone border border-warm-beige font-medium">
+          ${m}
+        </span>
+      `).join('');
+
+      updateModalPinButton();
+      document.getElementById('roomModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('roomModal').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+      currentModalRoom = null;
+    }
+
+    function updateModalPinButton() {
+      if (!currentModalRoom) return;
+      const btn = document.getElementById('modalPinButton');
+      const isPinned = pinnedRooms.includes(currentModalRoom.id);
+      if (isPinned) {
+        btn.className = "px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-warm-alabaster text-luxe-stone border border-warm-beige hover:bg-warm-beige flex items-center space-x-2";
+        btn.innerHTML = `<span>Remove from Design Notebook</span>`;
+      } else {
+        btn.className = "px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-luxe-charcoal text-warm-white hover:bg-luxe-slate flex items-center space-x-2";
+        btn.innerHTML = `<span>Save to My Design Notebook</span>`;
+      }
+    }
+
+    function togglePinCurrentModal() {
+      if (!currentModalRoom) return;
+      togglePin(currentModalRoom.id);
+      updateModalPinButton();
+    }
+
+    function togglePin(roomId) {
+      const index = pinnedRooms.indexOf(roomId);
+      if (index > -1) {
+        pinnedRooms.splice(index, 1);
+        showToast("Removed from your design notebook");
+      } else {
+        pinnedRooms.push(roomId);
+        showToast("Added to your design notebook ✨");
+      }
+      localStorage.setItem('lumeluxe_pinned_rooms', JSON.stringify(pinnedRooms));
+      updateMoodboardCount();
+      renderBlogCards();
+      renderMoodboardList();
+    }
+
+    function updateMoodboardCount() {
+      const count = pinnedRooms.length;
+      document.getElementById('notebookCount').textContent = count;
+      document.getElementById('drawerItemCount').textContent = count;
+    }
+
+    function toggleMoodboard(show) {
+      const drawer = document.getElementById('moodboardDrawer');
+      if (show) {
+        drawer.classList.remove('translate-x-full');
+      } else {
+        drawer.classList.add('translate-x-full');
+      }
+    }
+
+    function clearMoodboard() {
+      if (confirm("Are you sure you wish to clear your saved design notebook?")) {
+        pinnedRooms = [];
+        localStorage.setItem('lumeluxe_pinned_rooms', JSON.stringify(pinnedRooms));
+        updateMoodboardCount();
+        renderBlogCards();
+        renderMoodboardList();
+        showToast("Notebook cleared");
+      }
+    }
+
+    function renderMoodboardList() {
+      const container = document.getElementById('moodboardList');
+      if (pinnedRooms.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 text-luxe-muted">
+            <svg class="w-12 h-12 mx-auto mb-3 opacity-40 text-gold-champagne" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            <p class="text-sm font-serif font-bold text-luxe-charcoal">Your Notebook is currently empty.</p>
+            <p class="text-xs text-luxe-muted mt-1 max-w-xs mx-auto">Click the bookmark icon on any room guide in the Blog section to collate your personal portfolio here.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const pinnedItems = lumeRoomsData.filter(r => pinnedRooms.includes(r.id));
+      container.innerHTML = `
+        <div class="space-y-4">
+          ${pinnedItems.map(room => `
+            <div class="p-3.5 rounded-xl border border-warm-beige bg-warm-alabaster flex space-x-3 items-center">
+              <img src="${room.image}" alt="${room.title}" class="w-16 h-16 rounded-lg object-cover shrink-0">
+              <div class="flex-1 min-w-0">
+                <h4 class="font-serif text-xs font-bold text-luxe-charcoal truncate">${room.shortTitle}</h4>
+                <p class="text-[10px] text-gold-antique font-semibold">${room.aesthetic}</p>
+                
+                <div class="flex space-x-1 mt-1.5">
+                  ${room.palette.map(p => `
+                    <div class="w-3.5 h-3.5 rounded border border-black/10" style="background-color: ${p.hex}" title="${p.name}"></div>
+                  `).join('')}
+                </div>
+              </div>
+              <button onclick="togglePin('${room.id}')" class="text-luxe-muted hover:text-red-600 p-1 text-sm font-bold">&times;</button>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function copyHex(hex) {
+      navigator.clipboard.writeText(hex).then(() => {
+        showToast(`Copied ${hex} to clipboard!`);
+      }).catch(() => {
+        showToast(`Selected colour: ${hex}`);
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMessage');
+      toastMsg.textContent = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2500);
+    }
+
+    // Lume & Luxe Style Matcher Quiz
+    function openStyleQuiz() {
+      document.getElementById('quizStep1').classList.remove('hidden');
+      document.getElementById('quizStep2').classList.add('hidden');
+      document.getElementById('quizStep3').classList.add('hidden');
+      document.getElementById('quizResult').classList.add('hidden');
+      document.getElementById('quizModal').classList.remove('hidden');
+    }
+
+    function closeStyleQuiz() {
+      document.getElementById('quizModal').classList.add('hidden');
+    }
+
+    function answerQuiz(step, val) {
+      quizAnswers[step] = val;
+      if (step === 1) {
+        document.getElementById('quizStep1').classList.add('hidden');
+        document.getElementById('quizStep2').classList.remove('hidden');
+      } else if (step === 2) {
+        document.getElementById('quizStep2').classList.add('hidden');
+        document.getElementById('quizStep3').classList.remove('hidden');
+      }
+    }
+
+    function finishQuiz(vibe) {
+      document.getElementById('quizStep3').classList.add('hidden');
+      const resultBox = document.getElementById('quizResult');
+      resultBox.classList.remove('hidden');
+
+      const titleEl = document.getElementById('resultTitle');
+      const descEl = document.getElementById('resultDescription');
+      const roomsEl = document.getElementById('resultRecommendedRooms');
+
+      if (vibe === 'japandi') {
+        titleEl.textContent = "Organic Serenity & Japandi Warmth";
+        descEl.textContent = "You value quiet, uncluttered architectural lines softened with natural English timber, tactile bouclé upholstery, linen voiles, and raw pottery.";
+        roomsEl.innerHTML = `
+          <strong class="block text-luxe-charcoal mb-1 font-serif">Recommended Guides For You:</strong>
+          <div>&bull; The Curated Living Room (Organic Minimalism)</div>
+          <div>&bull; The Architect's Kitchen (Concealed Larder &amp; Oak)</div>
+          <div>&bull; The Master Suite (Restorative Sanctuary)</div>
+        `;
+      } else if (vibe === 'luxury') {
+        titleEl.textContent = "Heritage Grandeur & Quiet Luxury";
+        descEl.textContent = "You gravitate towards classical architectural proportion, veined Calacatta marble, patinated brass fixtures, high-volume void pendants, and dramatic entertaining.";
+        roomsEl.innerHTML = `
+          <strong class="block text-luxe-charcoal mb-1 font-serif">Recommended Guides For You:</strong>
+          <div>&bull; The Formal Drawing Room (Classical Heritage)</div>
+          <div>&bull; The Grand Entrance Hall (First Impressions)</div>
+          <div>&bull; The Jewel-Box Cloakroom (Botanicals &amp; Marble)</div>
+          <div>&bull; The Architectural Stairwell (Void Chandeliers)</div>
+        `;
+      } else {
+        titleEl.textContent = "Contemporary Urban Sophistication";
+        descEl.textContent = "You prioritise modern functionality, sleek architectural profiles, smart bespoke storage joinery, and warm indirect illumination that elevates city apartments.";
+        roomsEl.innerHTML = `
+          <strong class="block text-luxe-charcoal mb-1 font-serif">Recommended Guides For You:</strong>
+          <div>&bull; The Executive Study (Modern Productivity)</div>
+          <div>&bull; The Spa En-Suite (Limestone &amp; Curbless Showers)</div>
+          <div>&bull; The Private Screening Cinema (Acoustic Velvet)</div>
+        `;
+      }
+    }
+  </script>
+
+</body>
+</html>
